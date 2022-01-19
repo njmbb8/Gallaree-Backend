@@ -95,5 +95,5 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
   #making activestorage work
-  config.active_storage.service = :local
+  config.active_storage.service = :digitalocean
 end
