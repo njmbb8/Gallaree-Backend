@@ -33,3 +33,6 @@ gem 'activestorage'
 
 #serializer support
 gem 'active_model_serializers'
+
+#S3 support
+gem "aws-sdk-s3", require: false
