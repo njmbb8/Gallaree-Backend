@@ -9,6 +9,15 @@ class UsersController < ApplicationController
         end
     end
 
+    def show
+        user = User.find(cookies[:user_id])
+        if user
+            render json: user
+        else
+            render json: { errors: "Not Authorized" }
+        end
+    end
+
     private
 
     def user_params
