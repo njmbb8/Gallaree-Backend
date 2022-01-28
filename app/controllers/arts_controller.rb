@@ -10,6 +10,26 @@ class ArtsController < ApplicationController
         render json: art, status: :created
     end
 
+    def update
+        art = Art.find(params[:id])
+        if art
+            art.update(art_params)
+            render json: art
+        else
+            render json: { error: "Art not found" }, status: :not_found
+        end
+    end
+
+    def destroy
+        art = Art.find(params[:id])
+        if art
+            art.destroy
+            head :no_content
+        else
+            render json: { error: "Art not found" }, status: :not_found
+        end
+    end
+
     private
 
     def show_errors(exception)
