@@ -2,7 +2,7 @@ class ArtsController < ApplicationController
     rescue_from ActiveRecord::RecordNotSaved, with: :show_errors
 
     def index
-        render json: Art.all
+        render json: Art.order(:created_at).reverse_order
     end
 
     def create
