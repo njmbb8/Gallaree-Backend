@@ -96,4 +96,7 @@ Rails.application.configure do
 
   #making activestorage work
   config.active_storage.service = :digitalocean
+
+  #cors domain for production environment
+  config.allowed_cors_origins = ["http://shai-art.netlify.app/"]
 end
