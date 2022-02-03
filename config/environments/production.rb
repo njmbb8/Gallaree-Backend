@@ -98,5 +98,5 @@ Rails.application.configure do
   config.active_storage.service = :digitalocean
 
   #cors domain for production environment
-  config.allowed_cors_origins = ["http://shai-art.netlify.app/"]
+  config.allowed_cors_origins = ["https://shai-art.netlify.app/"]
 end
