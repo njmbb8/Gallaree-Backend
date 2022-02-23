@@ -39,3 +39,6 @@ gem "aws-sdk-s3", require: false
 
 #Devise for user auth
 gem 'devise'
+
+#actionmailer for devise
+gem 'actionmailer'

@@ -181,6 +181,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  actionmailer
   active_model_serializers
   activestorage
   aws-sdk-s3
