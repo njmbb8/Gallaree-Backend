@@ -37,8 +37,5 @@ gem 'active_model_serializers'
 #S3 support
 gem "aws-sdk-s3", require: false
 
-#Devise for user auth
-gem 'devise'
-
-#actionmailer for devise
+#actionmailer for sending mail
 gem 'actionmailer'
