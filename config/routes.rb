@@ -5,4 +5,7 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   get '/me', to: 'users#show'
   delete '/logout', to: 'sessions#destroy'
+  patch '/password', to: 'passwords#update'
+  patch '/reset_password', to: 'password_resets#update'
+  get '/reset_password', to: 'password_resets#create'
 end
