@@ -3,6 +3,7 @@ class UsersController < ApplicationController
     def create
         user = User.create(user_params)
         if user.valid?
+            user.send_confirmation_email!
             cookies.permanent[:user_id] = {
                 value: user.id,
                 domain: :all
