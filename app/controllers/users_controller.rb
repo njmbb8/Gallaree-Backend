@@ -26,7 +26,10 @@ class UsersController < ApplicationController
     private
 
     def user_params
-        params.permit(:email, :firstname, :lastname, :addr1, :addr2, :city, :state, :zip, :password, :password_confirmation)
+        params.permit(
+            :email, :firstname, :lastname, :password, :password_confirmation, :admin,
+            addresses: [:address_line1, :address_line2, :city, :state, :postal_code, :country]
+        )
     end
 
     # def return_unprocessable(error)
