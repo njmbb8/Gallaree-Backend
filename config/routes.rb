@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   patch '/password', to: 'passwords#update'
   patch '/reset_password', to: 'password_resets#update'
   get '/reset_password', to: 'password_resets#create'
+  patch '/confirmation', to: 'confirmations#update'
 end
