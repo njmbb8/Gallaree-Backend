@@ -28,7 +28,7 @@ class UsersController < ApplicationController
     def user_params
         params.permit(
             :email, :firstname, :lastname, :password, :password_confirmation, :admin,
-            addresses: [:address_line1, :address_line2, :city, :state, :postal_code, :country]
+            addresses_attributes: [:address_line1, :address_line2, :city, :state, :postal_code, :country]
         )
     end
 
