@@ -39,3 +39,6 @@ gem "aws-sdk-s3", require: false
 
 #actionmailer for sending mail
 gem 'actionmailer'
+
+#stripe for accepting payments
+gem 'stripe'
