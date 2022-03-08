@@ -1,0 +1,2 @@
+class PaymentIntentController < ApplicationController
+end
