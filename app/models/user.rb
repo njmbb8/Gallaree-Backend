@@ -1,6 +1,9 @@
 class User < ApplicationRecord
   has_secure_password
 
+  has_many :orders
+  has_many :arts, through: :orders
+  
   has_many :addresses
   accepts_nested_attributes_for :addresses
 
