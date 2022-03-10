@@ -2,9 +2,14 @@ class UsersController < ApplicationController
     def create
         @user = User.new(user_params)
         if @user.save
+            @order = Order.create!(:user_id => @user.id, :status => 1)
             @user.send_confirmation_email!
             cookies.permanent[:user_id] = {
                 value: @user.id,
+                domain: :all
+            }
+            cookies.permanent[:order] = {
+                value: @order.id,
                 domain: :all
             }
             render json: @user, status: :created

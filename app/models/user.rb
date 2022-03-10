@@ -2,10 +2,12 @@ class User < ApplicationRecord
   has_secure_password
 
   has_many :orders
-  has_many :arts, through: :orders
-  
+  has_many :order_items, through: :orders
+
   has_many :addresses
-  accepts_nested_attributes_for :addresses
+  accepts_nested_attributes_for :addresses, allow_destroy: true
+
+
 
   before_save :downcase_email
 

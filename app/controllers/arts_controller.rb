@@ -6,24 +6,29 @@ class ArtsController < ApplicationController
     end
 
     def create
-        art = Art.create!(art_params)
-        render json: art, status: :created
+        @art = Art.new(art_params)
+        # @art.user_id = User.find(cookies[:user_id]).id
+        if @art.save
+            render json: @art, status: :created
+        else
+            render json: { error: "Art did not save" }, status: :unprocessable_entity
+        end
     end
 
     def update
-        art = Art.find(params[:id])
-        if art
-            art.update(art_params)
-            render json: art
+        @art = Art.find(params[:id])
+        if @art
+            @art.update(art_params)
+            render json: @art
         else
             render json: { error: "Art not found" }, status: :not_found
         end
     end
 
     def destroy
-        art = Art.find(params[:id])
-        if art
-            art.destroy
+        @art = Art.find(params[:id])
+        if @art
+            @art.destroy
             head :no_content
         else
             render json: { error: "Art not found" }, status: :not_found
