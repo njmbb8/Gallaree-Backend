@@ -6,6 +6,9 @@ class SessionsController < ApplicationController
                 value: user.id,
                 domain: :all
             }
+            cookies.permanent[:order_id] = {
+                value: user.orders.last.id
+            }
             render json: user, status: :created
         else
             render json: { error: "Invalid username or password" }, status: :unauthorized

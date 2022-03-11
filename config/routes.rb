@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   patch '/reset_password', to: 'password_resets#update'
   get '/reset_password', to: 'password_resets#create'
   patch '/confirmation', to: 'confirmations#update'
+  post '/add_to_cart/', to: 'order_items#create'
 end

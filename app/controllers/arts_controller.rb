@@ -7,7 +7,6 @@ class ArtsController < ApplicationController
 
     def create
         @art = Art.new(art_params)
-        # @art.user_id = User.find(cookies[:user_id]).id
         if @art.save
             render json: @art, status: :created
         else
@@ -42,6 +41,6 @@ class ArtsController < ApplicationController
     end
 
     def art_params
-        params.permit(:title, :description, :price, :status_id, :photo)
+        params.require(:art).permit(:title, :description, :price, :status_id, :photo)
     end
 end
