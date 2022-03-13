@@ -28,7 +28,7 @@ class ArtsController < ApplicationController
         @art = Art.find(params[:id])
         if @art
             @art.destroy
-            head :no_content
+            head :ok
         else
             render json: { error: "Art not found" }, status: :not_found
         end

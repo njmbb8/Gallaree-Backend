@@ -1,6 +1,6 @@
 class OrderController < ApplicationController
     def show
-        @order = Order.find(params[:order_id])
+        @order = Order.find(params[:id])
         if @order
             render json: @order, status: :ok
         else
