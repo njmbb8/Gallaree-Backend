@@ -2,8 +2,8 @@ class OrderItemsController < ApplicationController
     def create
         @order = Order.find(cookies[:order_id])
         if @order
-            @order_item = OrderItem.create!(order_id: @order.id, arts_id: params[:arts_id] )
-            if @order_item
+            @order_item = @order.order_items.new(arts_id: params[:arts_id])
+            if @order_item.save
                 render json: @order, status: :created
             else
                 render json: { error: 'Unable to add item to order' }, status: :unprocessable_entity
@@ -22,5 +22,11 @@ class OrderItemsController < ApplicationController
         else
             render json: { error: "Could not remove item from cart" }, status: :unprocessable_entity
         end
+    end
+
+    private
+
+    def order_item_params
+        params.permit(:arts_id)
     end
 end
