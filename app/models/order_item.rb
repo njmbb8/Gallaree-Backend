@@ -1,4 +1,4 @@
 class OrderItem < ApplicationRecord
     belongs_to :order
-    has_many :arts
+    belongs_to :art
 end
