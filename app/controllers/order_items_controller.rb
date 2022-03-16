@@ -15,12 +15,15 @@ class OrderItemsController < ApplicationController
 
     def destroy
         @order_item = OrderItem.find(params[:order_item_id])
-        @order = Order.find(@order_item.order.id)
         if @order_item
-            @order_item.destroy
-            head :ok
+            if @order_item.order_id == cookies[:order_id]
+                @order_item.destroy
+                render json: Order.find(cookies[:order_id]), status: :ok
+            else
+                render json: { error: "item not in order" }, status: :unauthorized
+            end
         else
-            render json: { error: "Could not remove item from cart" }, status: :unprocessable_entity
+            render json: { error: "order item not found" }, status: :not_found
         end
     end
 
