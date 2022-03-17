@@ -28,9 +28,9 @@ class OrderItemsController < ApplicationController
     private
 
     def check_ownership
-        @order_item = OrderItem.find(params[:order_item_id])
+        @order_item = OrderItem.find(params[:id])
         if @order_item
-            render json: { error: "item not in order" }, status: :unauthorized unless @order_item.order_id == cookies[:order_id]
+            render json: { error: "item not in order" }, status: :unauthorized unless @order_item.order_id == cookies[:order_id].to_i
         else
             render json: { error: "order item not found" }, status: :not_found
         end
