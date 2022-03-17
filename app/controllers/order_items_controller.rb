@@ -1,4 +1,6 @@
 class OrderItemsController < ApplicationController
+    before_action :check_ownership, only: [:update, :destroy]
+    
     def create
         @order = Order.find(cookies[:order_id])
         if @order
@@ -13,21 +15,26 @@ class OrderItemsController < ApplicationController
         end
     end
 
+    def update
+        @order_item.quantity = params[:quantity]
+        render json: Order.find(cookies[:order_id]), status: :ok
+    end
+
     def destroy
+        @order_item.destroy
+        render json: Order.find(cookies[:order_id]), status: :ok
+    end
+
+    private
+
+    def check_ownership
         @order_item = OrderItem.find(params[:order_item_id])
         if @order_item
-            if @order_item.order_id == cookies[:order_id]
-                @order_item.destroy
-                render json: Order.find(cookies[:order_id]), status: :ok
-            else
-                render json: { error: "item not in order" }, status: :unauthorized
-            end
+            render json: { error: "item not in order" }, status: :unauthorized unless @order_item.order_id == cookies[:order_id]
         else
             render json: { error: "order item not found" }, status: :not_found
         end
     end
-
-    private
 
     def order_item_params
         params.permit(:arts_id)
