@@ -4,7 +4,7 @@ class OrderItemsController < ApplicationController
     def create
         @order = Order.find(cookies[:order_id])
         if @order
-            @order_item = @order.order_items.new(arts_id: params[:arts_id])
+            @order_item = @order.order_items.new(art_id: params[:art_id], quantity: params[:quantity])
             if @order_item.save
                 render json: @order, status: :created
             else
