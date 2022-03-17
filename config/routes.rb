@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :arts, only: [:index, :show, :create, :update, :destroy]
   resources :statuses, only: [:index]
   resources :payment_intents, only: [:create]
-  resources :order_items, only: [:create, :destroy]
+  resources :order_items, only: [:create, :destroy, :update]
   resources :order, only: [:show]
   post '/register', to: 'users#create'
   post '/login', to: 'sessions#create'
