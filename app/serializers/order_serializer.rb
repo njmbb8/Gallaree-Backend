@@ -4,6 +4,6 @@ class OrderSerializer < ActiveModel::Serializer
   has_many :order_items
 
   def order_total
-    object.arts.sum {|art| art.price}
+    object.order_items.sum { |item| item.art.price * item.quantity }
   end
 end
