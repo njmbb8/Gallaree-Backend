@@ -17,7 +17,11 @@ class OrderItemsController < ApplicationController
 
     def update
         @order_item.quantity = params[:quantity]
-        render json: Order.find(cookies[:order_id]), status: :ok
+        if @order_item.save
+            render json: Order.find(cookies[:order_id]), status: :ok
+        else
+            render json: {error: 'Unable to update item' }, status: :unprocessable_entity
+        end
     end
 
     def destroy
