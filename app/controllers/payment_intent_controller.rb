@@ -7,5 +7,7 @@ class PaymentIntentController < ApplicationController
                 enabled: true
             }
         )
+
+        render json: { clientSecret: @payment_intent['client_secret']}, status: :ok
     end
 end
