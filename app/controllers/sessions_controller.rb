@@ -17,6 +17,7 @@ class SessionsController < ApplicationController
 
     def destroy
         cookies.delete :user_id
+        cookies.delete :order_id
         head :no_content
     end
 end 
