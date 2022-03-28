@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_24_183833) do
+ActiveRecord::Schema.define(version: 2022_03_28_171122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,11 +76,19 @@ ActiveRecord::Schema.define(version: 2022_03_24_183833) do
     t.check_constraint "quantity > 0", name: "positive_quantity"
   end
 
+  create_table "order_statuses", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "orders", force: :cascade do |t|
     t.integer "user_id"
     t.integer "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "order_status_id"
+    t.string "tracking"
   end
 
   create_table "statuses", force: :cascade do |t|

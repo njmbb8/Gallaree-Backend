@@ -15,4 +15,5 @@ Rails.application.routes.draw do
   get '/reset_password', to: 'password_resets#create'
   patch '/confirmation', to: 'confirmations#update'
   post '/add_to_cart/', to: 'order_items#create'
+  post '/webhook', to: 'payment_intent#update'
 end
