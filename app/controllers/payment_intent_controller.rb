@@ -55,6 +55,7 @@ class PaymentIntentController < ApplicationController
             order.save
             user = User.find(cookies[:user_id])
             new_order = user.order.new(order_status: 1)
+            new_order.save
         end
     end
 
