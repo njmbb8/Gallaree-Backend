@@ -4,7 +4,7 @@ class AddressesController < ApplicationController
     def create
         @user = User.find(cookies[:user_id])
         if @user
-            @address = @user.address.new(address_params)
+            @address = @user.addresses.new(address_params)
             if @address.save
                 render json: @address, status: :ok
             else
