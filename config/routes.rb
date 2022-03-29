@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :order, only: [:show]
   resources :payment_intent, only: [:create]
   resources :addresses, only: [:create, :update, :destroy]
+  resources :bios, only: [:index, :create]
   post '/register', to: 'users#create'
   post '/login', to: 'sessions#create'
   get '/me', to: 'users#show'
