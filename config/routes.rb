@@ -3,10 +3,10 @@ Rails.application.routes.draw do
   resources :statuses, only: [:index]
   resources :payment_intents, only: [:create]
   resources :order_items, only: [:create, :destroy, :update]
-  resources :order, only: [:show]
+  resources :order, only: [:show, :index]
   resources :payment_intent, only: [:create]
   resources :addresses, only: [:create, :update, :destroy]
-  resources :bios, only: [:index, :create]
+  resources :bio, only: [:index, :create]
   post '/register', to: 'users#create'
   post '/login', to: 'sessions#create'
   get '/me', to: 'users#show'

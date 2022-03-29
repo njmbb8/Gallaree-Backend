@@ -7,4 +7,8 @@ class OrderController < ApplicationController
             render json: { error: "order not found" }, status: :not_found
         end
     end
+
+    def index
+        render json: Order.all, status: :ok
+    end
 end
