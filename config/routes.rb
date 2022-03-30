@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :statuses, only: [:index]
   resources :payment_intents, only: [:create]
   resources :order_items, only: [:create, :destroy, :update]
-  resources :order, only: [:show, :index]
+  resources :order, only: [:show, :index, :update]
   resources :payment_intent, only: [:create]
   resources :addresses, only: [:create, :update, :destroy]
   resources :bio, only: [:index, :create]
