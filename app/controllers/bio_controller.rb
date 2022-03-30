@@ -3,8 +3,8 @@ class BioController < ApplicationController
         render json: Bio.last, status: :ok
     end
 
-    def new
-        bio = Bio.create!(params.permit)
+    def create
+        bio = Bio.create!(bio_params)
         if bio
             render json: bio, status: :ok
         else
