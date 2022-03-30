@@ -13,7 +13,7 @@ class OrderController < ApplicationController
     end
 
     def update
-        order = Order.find(cookies[:id])
+        order = Order.find(cookies[:order_id])
         if order
             if order.update(order_params)
                 render json: order, status: :ok
