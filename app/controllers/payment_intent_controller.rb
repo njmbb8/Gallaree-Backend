@@ -7,13 +7,11 @@ class PaymentIntentController < ApplicationController
                 enabled: true
             }
         )
-
-        render json: { clientSecret: @payment_intent['client_secret']}, status: :ok
+        render json: { clientSecret: @payment_intent['client_secret'], payment_intent: @payment_intent[:id]}, status: :ok
     end
 
     def update
         event = nil
-
         begin
             sig_header = request.env['HTTP_STRIPE_SIGNATURE']
             payload = request.body.read
@@ -27,10 +25,10 @@ class PaymentIntentController < ApplicationController
         end
 
         case event['type']
-        when 'checkout.session.completed'
+        when 'charge.succeeded'
             checkout_session = event['data']['object']
             mark_as_pending
-            if checkout_session.payment_status == 'paid'
+            if checkout_session.status == 'succeeded'
                 fulfill_order
             end
         when 'checkout.session.async_payment_succeeded'
@@ -44,7 +42,7 @@ class PaymentIntentController < ApplicationController
 
     private
     def mark_as_pending
-        order = Order.find(cookies[:order_id])
+        order = Order.find_by(payment_intent: params[:data][:object][:payment_intent])
         if order
             order.order_status_id = 2
             order.order_items.each do |item|
@@ -53,14 +51,15 @@ class PaymentIntentController < ApplicationController
                 art.save
             end
             order.save
-            user = User.find(cookies[:user_id])
-            new_order = user.order.new(order_status: 1)
+            user = order.user
+            new_order = user.orders.new(order_status_id: 1)
             new_order.save
         end
     end
 
     def fulfill_order
-        order = Order.find(cookies[:order_id])
+        order = Order.find_by(payment_intent: params[:data][:object][:payment_intent])
+        
         if order
             order.status = 3
             order.save
