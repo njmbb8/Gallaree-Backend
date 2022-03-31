@@ -28,6 +28,6 @@ class OrderController < ApplicationController
     private
 
     def order_params
-        params.permit(:user_id, :order_status, :tracking, :shipping_id, :billing_id)
+        params.permit(:user_id, :order_status, :tracking, :shipping_id, :payment_intent)
     end
 end
