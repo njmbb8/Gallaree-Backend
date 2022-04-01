@@ -10,15 +10,15 @@ There are many technologies used which can be found in the gem file; the heavy l
 - ActiveStorage
 - PostgreSQL
 - Puma
+- Stripe
 
 ## Currently Implemented
 
 - User registration and authentication
 - Upload, view, edit and delete(CRUD) access for art pieces to be displayed on the site
 - CORS restrictions are ironed out for specific hosts
+- Cart and checkout are processed on the back end using Stripe
 
 ## To Do
-- Differentiation of registration process for customers and artists
-- Implementation of cart and checkout system
 - Blog space for posts detailing new art pieces, events surrounding artist, etc
-- Support for multiple artists' front ends
+- Support for multiple artists' front ends using api keys
