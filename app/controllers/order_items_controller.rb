@@ -2,7 +2,7 @@ class OrderItemsController < ApplicationController
     before_action :check_ownership, only: [:update, :destroy]
     
     def create
-        @order = Order.find(cookies[:order_id])
+        @order = User.find(cookies[:user_id]).orders.last
         if @order
             @order_item = @order.order_items.new(art_id: params[:art_id], quantity: params[:quantity])
             if @order_item.save
@@ -18,7 +18,7 @@ class OrderItemsController < ApplicationController
     def update
         @order_item.quantity = params[:quantity]
         if @order_item.save
-            render json: Order.find(cookies[:order_id]), status: :ok
+            render json: @order, status: :ok
         else
             render json: {error: 'Unable to update item' }, status: :unprocessable_entity
         end
@@ -26,15 +26,17 @@ class OrderItemsController < ApplicationController
 
     def destroy
         @order_item.destroy
-        render json: Order.find(cookies[:order_id]), status: :ok
+        render json: @order, status: :ok
     end
 
     private
 
     def check_ownership
+        @user = User.find(cookies[:user_id])
+        @order = @user.orders.last
         @order_item = OrderItem.find(params[:id])
         if @order_item
-            render json: { error: "item not in order" }, status: :unauthorized unless @order_item.order_id == cookies[:order_id].to_i
+            render json: { error: "item not in order" }, status: :unauthorized unless @order_item.order_id == @order.id
         else
             render json: { error: "order item not found" }, status: :not_found
         end

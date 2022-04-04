@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     def show
         @user = User.find(cookies[:user_id])
         if @user
-            render json: @user
+            render json: @user, status: :ok
         else
             render json: { errors: "Not Authorized" }
         end
