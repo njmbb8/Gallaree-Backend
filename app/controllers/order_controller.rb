@@ -32,7 +32,7 @@ class OrderController < ApplicationController
         @order = Order.find(params[:id])
         render json: {error: "you are not logged in"}, status: :unauthorized unless user
         render json: {error: "could not find order"}, status: :not_found unless @order
-        render json: {error: "you do not have permission for this order"}, status: unauthorized unless user.admin || user.orders.last.id == @order.id
+        render json: {error: "you do not have permission for this order"}, status: :unauthorized unless user.admin || user.id == @order.user.id
     end
 
     def order_params
