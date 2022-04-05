@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :payment_intent, only: [:create]
   resources :addresses, only: [:create, :update, :destroy]
   resources :bio, only: [:index, :create]
+  resources :webhook, only: [:create]
   post '/register', to: 'users#create'
   post '/login', to: 'sessions#create'
   get '/me', to: 'users#show'
@@ -16,5 +17,4 @@ Rails.application.routes.draw do
   get '/reset_password', to: 'password_resets#create'
   patch '/confirmation', to: 'confirmations#update'
   post '/add_to_cart/', to: 'order_items#create'
-  post '/webhook', to: 'payment_intent#update'
 end
