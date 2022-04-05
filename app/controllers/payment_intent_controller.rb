@@ -11,6 +11,19 @@ class PaymentIntentController < ApplicationController
     end
 
     def update
+        order = Order.find(params[:id])
+        if order
+            if order.user_id == cookies[:user_id]
+                Stripe::PaymentIntent.update(order.payment_intent, {
+                    amount: order.order_items.sum {|item| item.art.price * item.quantity}
+                })
+                render json: order, status: :ok
+            else
+                render json: {error: "this order does not belong to you"}, status: :unauthorized
+            end
+        else
+            render json: {error: "order not found"}, status: :not_found
+        end
 
     end
 
