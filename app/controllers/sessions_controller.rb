@@ -6,9 +6,6 @@ class SessionsController < ApplicationController
                 value: user.id,
                 domain: :all
             }
-            cookies.permanent[:order_id] = {
-                value: user.orders.last.id
-            }
             render json: user, status: :created
         else
             render json: { error: "Invalid username or password" }, status: :unauthorized
@@ -17,7 +14,6 @@ class SessionsController < ApplicationController
 
     def destroy
         cookies.delete :user_id
-        cookies.delete :order_id
         head :no_content
     end
 end 
