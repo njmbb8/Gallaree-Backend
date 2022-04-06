@@ -4,11 +4,17 @@ class OrderItemsController < ApplicationController
     def create
         @order = User.find(cookies[:user_id]).orders.last
         if @order
-            @order_item = @order.order_items.new(art_id: params[:art_id], quantity: params[:quantity])
-            if @order_item.save
-                render json: @order, status: :created
+            if @order.order_items.find(params[:art_id])
+                order_item = @order.order_items.find(params[:art_id])
+                order_item.update(:quantity, order_item.quantity + params[:quantity].to_i)
+                render json: @order, status: :accepted
             else
-                render json: { error: 'Unable to add item to order' }, status: :unprocessable_entity
+                @order_item = @order.order_items.new(art_id: params[:art_id], quantity: params[:quantity])
+                if @order_item.save
+                    render json: @order, status: :created
+                else
+                    render json: { error: 'Unable to add item to order' }, status: :unprocessable_entity
+                end
             end
         else
             render json: {error: "Order does not exist"}, status: :not_found
