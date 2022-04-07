@@ -2,7 +2,7 @@ class AddressesController < ApplicationController
     before_action :check_ownership, only: [:update, :destroy]
     
     def create
-        @user = User.find(cookies[:user_id])
+        @user = User.find(cookies.signed[:user_id])
         if @user
             @address = @user.addresses.new(address_params)
             if @address.save
@@ -33,7 +33,7 @@ class AddressesController < ApplicationController
     def check_ownership
         @address = Address.find(params[:id])
         if @address
-            render json: {error: "address does not belong to user"}, status: :unauthorized unless @address.user.id == cookies[:user_id].to_i
+            render json: {error: "address does not belong to user"}, status: :unauthorized unless @address.user.id == cookies.signed[:user_id].to_i
         else
             render json: {error: "address not found"}, status: :not_found
         end

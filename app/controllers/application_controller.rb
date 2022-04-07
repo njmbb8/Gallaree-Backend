@@ -3,8 +3,8 @@ class ApplicationController < ActionController::API
 
     before_action :set_current_user
     def set_current_user
-        if cookies[:user_id]
-            Current.user = User.find_by(id: cookies[:user_id])
+        if cookies.signed[:user_id]
+            Current.user = User.find_by(id: cookies.signed[:user_id])
         end
     end
 

@@ -2,7 +2,7 @@ class OrderItemsController < ApplicationController
     before_action :check_ownership, only: [:update, :destroy]
     
     def create
-        @order = User.find(cookies[:user_id]).orders.last
+        @order = User.find(cookies.signed[:user_id]).orders.last
         if @order
             if @order.order_items.find(params[:art_id])
                 order_item = @order.order_items.find(params[:art_id])
@@ -38,7 +38,7 @@ class OrderItemsController < ApplicationController
     private
 
     def check_ownership
-        @user = User.find(cookies[:user_id])
+        @user = User.find(cookies.signed[:user_id])
         @order = @user.orders.last
         @order_item = OrderItem.find(params[:id])
         if @order_item

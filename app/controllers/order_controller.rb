@@ -5,7 +5,7 @@ class OrderController < ApplicationController
     end
 
     def index
-        user = User.find(cookies[:user_id])
+        user = User.find(cookies.signed[:user_id])
         if user
             if user.admin
                 render json: Order.all, status: :ok
@@ -28,7 +28,7 @@ class OrderController < ApplicationController
     private
 
     def check_auth
-        user = User.find(cookies[:user_id])
+        user = User.find(cookies.signed[:user_id])
         @order = Order.find(params[:id])
         render json: {error: "you are not logged in"}, status: :unauthorized unless user
         render json: {error: "could not find order"}, status: :not_found unless @order

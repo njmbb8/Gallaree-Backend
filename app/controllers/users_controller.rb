@@ -19,7 +19,7 @@ class UsersController < ApplicationController
     end
 
     def show
-        @user = User.find(cookies[:user_id])
+        @user = User.find(cookies.signed[:user_id])
         if @user
             render json: @user, status: :ok
         else

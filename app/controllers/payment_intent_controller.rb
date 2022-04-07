@@ -1,6 +1,6 @@
 class PaymentIntentController < ApplicationController
     def create
-        user = User.find(cookies[:user_id])
+        user = User.find(cookies.signed[:user_id])
         shipping_address = user.addresses.find_by(:shipping, true)
         @payment_intent = Stripe::PaymentIntent.create(
             amount: user.orders.last.order_items.sum { |item| item.art.price * item.quantity },
@@ -29,7 +29,7 @@ class PaymentIntentController < ApplicationController
         order = Order.find(params[:id])
         address = Order.find(order.shipping_address)
         if order
-            if order.user_id == cookies[:user_id]
+            if order.user_id == cookies.signed[:user_id]
                 Stripe::PaymentIntent.update(order.payment_intent, {
                     amount: order.order_items.sum {|item| item.art.price * item.quantity},
                     shipping: {
