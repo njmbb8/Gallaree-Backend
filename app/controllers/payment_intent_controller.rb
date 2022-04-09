@@ -52,30 +52,4 @@ class PaymentIntentController < ApplicationController
         end
 
     end
-
-    private
-    def mark_as_pending
-        order = Order.find_by(payment_intent: params[:data][:object][:payment_intent])
-        if order
-            order.order_status_id = 2
-            order.order_items.each do |item|
-                art = Art.find(item.art_id)
-                art.quantity = art.quantity - item.quantity
-                art.save
-            end
-            order.save
-            user = order.user
-            new_order = user.orders.new(order_status_id: 1)
-            new_order.save
-        end
-    end
-
-    def fulfill_order
-        order = Order.find_by(payment_intent: params[:data][:object][:payment_intent])
-        
-        if order
-            order.status = 3
-            order.save
-        end
-    end
 end
