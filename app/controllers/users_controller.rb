@@ -8,10 +8,6 @@ class UsersController < ApplicationController
                 value: @user.id,
                 domain: :all
             }
-            cookies.permanent[:order] = {
-                value: @order.id,
-                domain: :all
-            }
             render json: @user, status: :created
         else
             render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
