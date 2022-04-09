@@ -5,6 +5,9 @@ class AddressesController < ApplicationController
         @user = User.find(cookies.signed[:user_id])
         if @user
             @address = @user.addresses.new(address_params)
+            if @address.shipping
+                set_default
+            end
             if @address.save
                 render json: @address, status: :ok
             else
@@ -16,6 +19,9 @@ class AddressesController < ApplicationController
     end
     
     def update
+        if @address.shipping == false && address_params.shipping == true
+            set_default
+        end
         if @address.update(address_params)
             render json: @address, status: :ok
         else
@@ -25,10 +31,17 @@ class AddressesController < ApplicationController
 
     def destroy
         @address.destroy
+        if @address.shipping
+            @address.user.addresses.first.update(shipping: true)
+        end
         head :ok
     end
 
     private
+    def set_default
+        @address.user.addresses.map {|address| address.update(shipping: false)}
+        @address.update(shipping: true)
+    end
 
     def check_ownership
         @address = Address.find(params[:id])
