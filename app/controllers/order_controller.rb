@@ -10,7 +10,7 @@ class OrderController < ApplicationController
             if user.admin
                 render json: Order.all, status: :ok
             else
-                render json: {error: "You do not have access to other user's orders"}, status: :unauthorized
+                render json: user.orders, status: :ok
             end
         else
             render json: {error: "you are not logged in"}, status: :unauthorized
