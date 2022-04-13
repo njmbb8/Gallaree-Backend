@@ -19,7 +19,7 @@ class AddressesController < ApplicationController
     end
     
     def update
-        if @address.shipping == false && address_params.shipping == true
+        if @address.shipping == false && address_params[:shipping] == "true"
             set_default
         end
         if @address.update(address_params)
