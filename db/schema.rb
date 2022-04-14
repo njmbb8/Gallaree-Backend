@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_14_201318) do
+ActiveRecord::Schema.define(version: 2022_04_14_211228) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 2022_04_14_201318) do
     t.string "state"
     t.boolean "shipping"
     t.boolean "billing"
-    t.boolean "archived"
+    t.boolean "archived", default: false
   end
 
   create_table "arts", force: :cascade do |t|
