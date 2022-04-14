@@ -30,9 +30,12 @@ class AddressesController < ApplicationController
     end
 
     def destroy
-        @address.destroy
+        @address.update(archived: true)
+        if @address.user.orders.last.shipping_id == @address.id
+            @address.user.orders.last.update(shipping_id: @address.user.addresses.find_by(shipping: true).id)
+        end
         if @address.shipping
-            @address.user.addresses.first.update(shipping: true)
+            @address.user.addresses.first.update(archived: true)
         end
         head :ok
     end
