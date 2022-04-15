@@ -35,7 +35,7 @@ class AddressesController < ApplicationController
             @address.user.orders.last.update(shipping_id: @address.user.addresses.find_by(shipping: true).id)
         end
         if @address.shipping
-            @address.user.addresses.first.update(archived: true)
+            @address.user.addresses.where(:archived => false).first.update(shipping: true)
         end
         head :ok
     end
