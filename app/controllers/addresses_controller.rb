@@ -5,6 +5,7 @@ class AddressesController < ApplicationController
         @user = User.find(cookies.signed[:user_id])
         if @user
             @address = @user.addresses.new(address_params)
+            byebug
             if @address.shipping || @user.addresses.empty?
                 set_default
             end
@@ -56,6 +57,7 @@ class AddressesController < ApplicationController
     end
 
     def address_params
+        params[:postal_code] = params[:postal_code].to_i
         params.permit(:address_line1, :address_line2, :city, :postal_code, :country, :state, :shipping, :billing)
     end
 end
