@@ -5,7 +5,6 @@ class AddressesController < ApplicationController
         @user = User.find(cookies.signed[:user_id])
         if @user
             @address = @user.addresses.new(address_params)
-            byebug
             if @address.shipping || @user.addresses.empty?
                 set_default
             end
