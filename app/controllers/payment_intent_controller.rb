@@ -20,14 +20,14 @@ class PaymentIntentController < ApplicationController
                 },
                 name: "#{user.firstname} #{user.lastname}",
             },
-            statement_descriptor: "Order #: #{order.id}"
+            statement_descriptor: "Order #: #{user.orders.last.id}"
         )
         render json: { clientSecret: @payment_intent['client_secret'], payment_intent: @payment_intent[:id]}, status: :ok
     end
 
     def update
         order = Order.find(params[:id])
-        address = Order.find(order.shipping_address)
+        address = Address.find(order.id)
         if order
             if order.user_id == cookies.signed[:user_id]
                 Stripe::PaymentIntent.update(order.payment_intent, {
