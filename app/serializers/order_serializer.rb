@@ -1,5 +1,5 @@
 class OrderSerializer < ActiveModel::Serializer
-  attributes :id, :order_total, :tracking, :payment_intent, :address
+  attributes :id, :order_total, :tracking, :payment_intent, :address, :shipping_id
 
   has_many :order_items
   belongs_to :user
