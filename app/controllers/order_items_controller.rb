@@ -6,14 +6,24 @@ class OrderItemsController < ApplicationController
         if @order
             if @order.order_items.find_by(art_id: params[:art_id])
                 order_item = @order.order_items.find_by(art_id: params[:art_id])
-                order_item.update(quantity: order_item.quantity + params[:quantity].to_i)
-                render json: @order, status: :accepted
+                if order_item.quantity + params[:quantity].to_i > Art.find(params[:art_id]).quantity
+                    render json: {error: 'quantity in order exceeds quantity available'}, status: :unprocessable_entity
+                elsif order_item.quantity + params[:quantity].to_i < 0
+                    render json: {error: 'can not add negative amounts'}, status: :unprocessable_entity
+                else
+                    order_item.update(quantity: order_item.quantity + params[:quantity].to_i)
+                    render json: @order, status: :accepted
+                end
             else
                 @order_item = @order.order_items.new(art_id: params[:art_id], quantity: params[:quantity])
-                if @order_item.save
-                    render json: @order, status: :created
+                if params[:quantity] < 0
+                    render json: {error: "can not add negative amount of items"}, status: :unprocessable_entity
                 else
-                    render json: { error: 'Unable to add item to order' }, status: :unprocessable_entity
+                    if @order_item.save
+                        render json: @order, status: :created
+                    else
+                        render json: { error: 'Unable to add item to order' }, status: :unprocessable_entity
+                    end
                 end
             end
         else
@@ -22,11 +32,17 @@ class OrderItemsController < ApplicationController
     end
 
     def update
-        @order_item.quantity = params[:quantity]
-        if @order_item.save
-            render json: @order, status: :ok
+        if params[:quantity].to_i < 0
+            render json: {error: "can not set quantity to negative"}, status: :unprocessable_entity
+        elsif params[:quantity].to_i > @order_item
+            render json: {error: "can not set quantity larger than stock"}
         else
-            render json: {error: 'Unable to update item' }, status: :unprocessable_entity
+            @order_item.quantity = params[:quantity]
+            if @order_item.save
+                render json: @order, status: :ok
+            else
+                render json: {error: 'Unable to update item' }, status: :unprocessable_entity
+            end
         end
     end
 
