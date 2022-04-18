@@ -4,7 +4,7 @@ class OrderItemsController < ApplicationController
     def create
         @order = User.find(cookies.signed[:user_id]).orders.last
         if @order
-            if @order.order_items.find(params[:art_id])
+            if @order.order_items.find_by_id(params[:art_id])
                 order_item = @order.order_items.find(params[:art_id])
                 order_item.update(:quantity, order_item.quantity + params[:quantity].to_i)
                 render json: @order, status: :accepted

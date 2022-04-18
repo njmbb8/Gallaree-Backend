@@ -18,7 +18,7 @@ class PaymentIntentController < ApplicationController
                     postal_code: shipping_address.postal_code,
                     state: shipping_address.state
                 },
-                name: "#{user.firstname} #{user.lastname}",
+                name: "#{user.firstname} #{user.lastname}"
             },
             statement_descriptor: "Order #: #{user.orders.last.id}"
         )
@@ -27,7 +27,7 @@ class PaymentIntentController < ApplicationController
 
     def update
         order = Order.find(params[:id])
-        address = Address.find(order.id)
+        address = Address.find(order.shipping_id)
         if order
             if order.user_id == cookies.signed[:user_id]
                 Stripe::PaymentIntent.update(order.payment_intent, {
@@ -40,7 +40,8 @@ class PaymentIntentController < ApplicationController
                             line2: address.address_line2,
                             postal_code: address.postal_code,
                             state: address.state
-                        }
+                        },
+                        name: "#{order.user.firstname} #{order.user.lastname}"
                     }
                 })
                 render json: order, status: :ok

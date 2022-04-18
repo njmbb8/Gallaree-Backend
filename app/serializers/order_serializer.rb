@@ -10,11 +10,11 @@ class OrderSerializer < ActiveModel::Serializer
   end
 
   def address
-    address = Address.find(object.shipping_id)
+    address = Address.find_by_id(object.shipping_id)
     if address
       address
     else
-      null
+      nil
     end
   end
 end
