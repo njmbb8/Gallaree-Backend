@@ -2,8 +2,9 @@ class PaymentIntentController < ApplicationController
     def create
         user = User.find(cookies.signed[:user_id])
         shipping_address = user.addresses.find_by(shipping: true)
+        @order = user.orders.last
         @payment_intent = Stripe::PaymentIntent.create(
-            amount: user.orders.last.order_items.sum { |item| item.art.price * item.quantity },
+            amount: calculate_total,
             currency: 'usd',
             automatic_payment_methods: {
                 enabled: true
@@ -26,12 +27,12 @@ class PaymentIntentController < ApplicationController
     end
 
     def update
-        order = Order.find(params[:id])
+        @order = Order.find(params[:id])
         address = Address.find(order.shipping_id)
         if order
             if order.user_id == cookies.signed[:user_id]
                 Stripe::PaymentIntent.update(order.payment_intent, {
-                    amount: order.order_items.sum {|item| item.art.price * item.quantity},
+                    amount: calculate_total,
                     shipping: {
                         address: {
                             city: address.city,
@@ -52,5 +53,13 @@ class PaymentIntentController < ApplicationController
             render json: {error: "order not found"}, status: :not_found
         end
 
+    end
+
+    private
+
+    def calculate_total
+        sum = @order.order_items.sum {|item| item.art.price * item.quantity} * 100
+        sum_with_percentage = sum + (0.029 * sum)
+        sum_with_percentage + 30
     end
 end
