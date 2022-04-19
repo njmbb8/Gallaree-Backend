@@ -34,7 +34,7 @@ class OrderItemsController < ApplicationController
     def update
         if params[:quantity].to_i < 0
             render json: {error: "can not set quantity to negative"}, status: :unprocessable_entity
-        elsif params[:quantity].to_i > @order_item
+        elsif params[:quantity].to_i > @order_item.quantity
             render json: {error: "can not set quantity larger than stock"}
         else
             @order_item.quantity = params[:quantity]
