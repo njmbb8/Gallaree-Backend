@@ -16,7 +16,7 @@ class OrderItemsController < ApplicationController
                 end
             else
                 @order_item = @order.order_items.new(art_id: params[:art_id], quantity: params[:quantity])
-                if params[:quantity] < 0
+                if params[:quantity].to_i < 0
                     render json: {error: "can not add negative amount of items"}, status: :unprocessable_entity
                 else
                     if @order_item.save
