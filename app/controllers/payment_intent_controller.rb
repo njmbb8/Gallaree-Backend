@@ -27,11 +27,11 @@ class PaymentIntentController < ApplicationController
     end
 
     def update
-        @order = Order.find(params[:id])
-        address = Address.find(order.shipping_id)
-        if order
-            if order.user_id == cookies.signed[:user_id]
-                Stripe::PaymentIntent.update(order.payment_intent, {
+        @order = Order.find(params[:id].to_i)
+        address = Address.find(@order.shipping_id)
+        if @order
+            if @order.user_id == cookies.signed[:user_id]
+                Stripe::PaymentIntent.update(@order.payment_intent, {
                     amount: calculate_total,
                     shipping: {
                         address: {
@@ -42,10 +42,10 @@ class PaymentIntentController < ApplicationController
                             postal_code: address.postal_code,
                             state: address.state
                         },
-                        name: "#{order.user.firstname} #{order.user.lastname}"
+                        name: "#{@order.user.firstname} #{@order.user.lastname}"
                     }
                 })
-                render json: order, status: :ok
+                render json: @order, status: :ok
             else
                 render json: {error: "this order does not belong to you"}, status: :unauthorized
             end
@@ -60,6 +60,6 @@ class PaymentIntentController < ApplicationController
     def calculate_total
         sum = @order.order_items.sum {|item| item.art.price * item.quantity} * 100
         sum_with_percentage = sum + (0.029 * sum)
-        sum_with_percentage + 30
+        (sum_with_percentage + 30).ceil
     end
 end
