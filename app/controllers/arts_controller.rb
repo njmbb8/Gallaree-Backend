@@ -69,6 +69,7 @@ class ArtsController < ApplicationController
     def destroy
         @art = Art.find(params[:id])
         if @art
+            Stripe::Product.update(@art.product_code, {active: false})
             @art.destroy
             head :ok
         else
