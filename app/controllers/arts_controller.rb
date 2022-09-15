@@ -23,7 +23,8 @@ class ArtsController < ApplicationController
                 },
                 shippable: true,
                 tax_code: 'txcd_99999999',
-                name: @art.title
+                name: @art.title,
+                description: @art.description
             })[:id]
             @art.update(product_code: id)
             render json: @art, status: :created
@@ -35,26 +36,29 @@ class ArtsController < ApplicationController
     def update
         @art = Art.find(params[:id])
         if @art
+            product = {
+                active: @art.status_id == 2,
+                images: [polymorphic_url(@art.photo)],
+                package_dimensions:{
+                    height: @art.height,
+                    length: @art.length,
+                    width: @art.width,
+                    weight: @art.weight
+                },
+                name: @art.title,
+                description: @art.description
+            }
+            if @art.price != params[:price].to_i
+                product[:default_price] = Stripe::Price.create({
+                    currency: 'usd',
+                    unit_amount: params[:price],
+                    product: @art.product_code
+                })
+            end
             @art.update(art_params)
             Stripe::Product.update(
                 @art.product_code,
-                {
-                    default_price_data:{
-                        currency: 'usd',
-                        unit_amount: @art.price * 100
-                    },
-                    active: @art.status_id == 2,
-                    images: [polymorphic_url(@art.photo)],
-                    package_dimensions:{
-                        height: @art.height,
-                        length: @art.length,
-                        width: @art.width,
-                        weight: @art.weight
-                    },
-                    shippable: true,
-                    tax_code: 'txcd_99999999',
-                    name: @art.title
-                }
+                product
             )
             render json: @art
         else
