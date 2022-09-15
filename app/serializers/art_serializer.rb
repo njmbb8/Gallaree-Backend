@@ -1,6 +1,6 @@
 class ArtSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
-  attributes :id, :title, :description, :price, :status_id, :photo, :quantity
+  attributes :id, :title, :description, :price, :status_id, :photo, :quantity, :length, :width, :height, :weight
   belongs_to :status
 
   def photo

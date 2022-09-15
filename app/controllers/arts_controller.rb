@@ -36,6 +36,26 @@ class ArtsController < ApplicationController
         @art = Art.find(params[:id])
         if @art
             @art.update(art_params)
+            Stripe::Product.update(
+                @art.product_code,
+                {
+                    default_price_data:{
+                        currency: 'usd',
+                        unit_amount: @art.price
+                    },
+                    active: @art.status_id == 2,
+                    images: [polymorphic_url(@art.photo)],
+                    package_dimensions:{
+                        height: @art.height,
+                        length: @art.length,
+                        width: @art.width,
+                        weight: @art.weight
+                    },
+                    shippable: true,
+                    tax_code: 'txcd_99999999',
+                    name: @art.title
+                }
+            )
             render json: @art
         else
             render json: { error: "Art not found" }, status: :not_found
