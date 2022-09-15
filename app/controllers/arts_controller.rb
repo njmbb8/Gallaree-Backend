@@ -11,7 +11,7 @@ class ArtsController < ApplicationController
             id = Stripe::Product.create({
                 default_price_data:{
                     currency: 'usd',
-                    unit_amount: @art.price
+                    unit_amount: @art.price * 100
                 },
                 active: @art.status_id == 2,
                 images: [polymorphic_url(@art.photo)],
@@ -41,7 +41,7 @@ class ArtsController < ApplicationController
                 {
                     default_price_data:{
                         currency: 'usd',
-                        unit_amount: @art.price
+                        unit_amount: @art.price * 100
                     },
                     active: @art.status_id == 2,
                     images: [polymorphic_url(@art.photo)],
