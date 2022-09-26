@@ -30,7 +30,7 @@ class UsersController < ApplicationController
             @user.update(stripe_id: customer_id)
             @order = Order.create!(:user_id => @user.id, :status => 1)
             @user.send_confirmation_email!
-            cookies.permanent[:user_id] = {
+            cookies.permanent.signed[:user_id] = {
                 value: @user.id,
                 domain: :all
             }
