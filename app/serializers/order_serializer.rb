@@ -3,7 +3,6 @@ class OrderSerializer < ActiveModel::Serializer
 
   has_many :order_items
   belongs_to :user
-  belongs_to :order_status
 
   def order_total
     object.order_items.sum { |item| item.art.price * item.quantity }

@@ -42,3 +42,6 @@ gem 'actionmailer'
 
 #stripe for accepting payments
 gem 'stripe'
+
+#Send In Blue gem
+gem 'sendinblue'

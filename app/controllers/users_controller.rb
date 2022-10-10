@@ -26,14 +26,11 @@ class UsersController < ApplicationController
                     name: "#{params[:firstname]} #{params[:lastname]}",
                     phone: params[:phone]
                 }
-            })
+            })[:id]
             @user.update(stripe_id: customer_id)
             @order = Order.create!(:user_id => @user.id, :status => 1)
-            @user.send_confirmation_email!
-            cookies.permanent.signed[:user_id] = {
-                value: @user.id,
-                domain: :all
-            }
+            # @user.send_confirmation_email!
+            cookies.permanent.signed[:user_id] = @user.id
             render json: @user, status: :created
         else
             render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
@@ -41,11 +38,11 @@ class UsersController < ApplicationController
     end
 
     def show
-        @user = User.find(cookies.signed[:user_id])
-        if @user
-            render json: @user, status: :ok
+        if cookies.signed[:user_id]
+            user = User.find(cookies.signed[:user_id])
+            render json: user, status: :ok
         else
-            render json: { errors: "Not Authorized" }
+            render json: { error: "You are not logged in"}, status: :unauthorized
         end
     end
 

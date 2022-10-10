@@ -1,9 +1,14 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :firstname, :lastname, :email, :admin, :active_order
+  attributes :id, :stripe_info, :active_order
 
   has_many :addresses
 
   def active_order
     object.orders.last
+  end
+
+  def stripe_info
+    byebug
+    Stripe::Customer.retrieve(object.stripe_id)
   end
 end
