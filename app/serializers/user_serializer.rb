@@ -8,7 +8,6 @@ class UserSerializer < ActiveModel::Serializer
   end
 
   def stripe_info
-    byebug
     Stripe::Customer.retrieve(object.stripe_id)
   end
 end
