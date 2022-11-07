@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stripe_id: MyString
+  last4: 1
+  month: 1
+  year: 1
+
+two:
+  stripe_id: MyString
+  last4: 1
+  month: 1
+  year: 1

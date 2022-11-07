@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   resources :addresses, only: [:create]
   resources :bio, only: [:index, :create]
   resources :webhook, only: [:create]
+  resources :card, only: [:index, :create, :destroy]
+  resources :setup_intent, only: [:create]
   post '/register', to: 'users#create'
   post '/login', to: 'sessions#create'
   get '/me', to: 'users#show'
