@@ -4,7 +4,7 @@ class UserSerializer < ActiveModel::Serializer
   has_many :addresses
 
   def active_order
-    object.orders.last
+    OrderSerializer.new(object.orders.last, each_serializer: OrderSerializer)
   end
 
   def stripe_info
