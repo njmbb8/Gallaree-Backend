@@ -10,7 +10,10 @@ class User < ApplicationRecord
 
   before_save :downcase_email
 
+
   validates :email, presence: true, uniqueness: true, format: { with: /\A[^@\s]+@[^@\s]+\z/, message: 'Invalid email' }
+
+  after_initialize :make_first_admin
 
   def confrim!
     update_columns(confirmed_at: Time.current)
@@ -25,6 +28,14 @@ class User < ApplicationRecord
   end
 
   private
+
+  def make_first_admin
+    if User.count == 1 
+      self.admin = true
+    else
+      self.admin = false
+    end
+  end
 
   def downcase_email
     self.email = email.downcase

@@ -1,30 +1,39 @@
 class UsersController < ApplicationController
+
+    wrap_parameters false
+
     def create
-        @user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:password_confirmation])
+        @user = User.new(
+            email: user_params[:email], 
+            firstname: user_params[:firstname], 
+            lastname: user_params[:lastname], 
+            password: user_params[:password], 
+            password_confirmation: user_params[:password_confirmation]
+        )
         if @user.save
             customer_id = Stripe::Customer.create({
                 address: {
-                    line1: params[:billingAddr1],
-                    line2: params[:billingAddr2],
-                    city: params[:billingCity],
-                    state: params[:billingState],
-                    country: params[:billingCountry],
-                    postal_code: params[:billingZip]
+                    line1: user_params[:billingAddr1],
+                    line2: user_params[:billingAddr2],
+                    city: user_params[:billingCity],
+                    state: user_params[:billingState],
+                    country: 'USA',
+                    postal_code: user_params[:billingZip]
                 },
                 email: @user.email,
-                name: "#{params[:firstname]} #{params[:lastname]}",
-                phone: params[:phone],
+                name: "#{user_params[:firstname]} #{user_params[:lastname]}",
+                phone: user_params[:phone],
                 shipping: {
                     address: {
-                        city: params[:sameAsShipping] ? params[:billingCity] : params[:shippingCity],
-                        country: params[:sameAsShipping] ? params[:billingCountry] : params[:shippingCountry],
-                        line1: params[:sameAsShipping] ? params[:billingAddr1] : params[:shippingAddr1],
-                        line2: params[:sameAsShipping] ? params[:billingAddr2] : params[:shippingAddr2],
-                        postal_code: params[:sameAsShipping] ? params[:billingZip] : params[:shippingZip],
-                        state: params[:sameAsShipping] ? params[:billingState] : params[:shippingState]
+                        city: user_params[:sameAsShipping] ? user_params[:billingCity] : user_params[:shippingCity],
+                        country: 'USA',
+                        line1: user_params[:sameAsShipping] ? user_params[:billingAddr1] : user_params[:shippingAddr1],
+                        line2: user_params[:sameAsShipping] ? user_params[:billingAddr2] : user_params[:shippingAddr2],
+                        postal_code: user_params[:sameAsShipping] ? user_params[:billingZip] : user_params[:shippingZip],
+                        state: user_params[:sameAsShipping] ? user_params[:billingState] : user_params[:shippingState]
                     },
-                    name: "#{params[:firstname]} #{params[:lastname]}",
-                    phone: params[:phone]
+                    name: "#{user_params[:firstname]} #{user_params[:lastname]}",
+                    phone: user_params[:phone]
                 }
             })[:id]
             @user.update(stripe_id: customer_id)
@@ -49,9 +58,11 @@ class UsersController < ApplicationController
     private
 
     def user_params
-        params.require(:user).permit(
+        params.permit(
             :email, :firstname, :lastname, :password, :password_confirmation,
-            addresses_attributes: [:id, :address_line1, :address_line2, :city, :state, :postal_code, :country]
+            :billingAddr1, :billingAddr2, :billingCity, :billingState, :billingZip,
+            :sameAsShipping, :shippingAddr1, :shippingAddr2, :shippingCity, :shippingState, :shippingZip,
+            :phone
         )
     end
 end
