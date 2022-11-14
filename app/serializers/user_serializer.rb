@@ -1,5 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :stripe_info, :active_order
+  attributes :id, :stripe_info, :active_order, :admin
 
   has_many :addresses
 

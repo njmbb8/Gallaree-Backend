@@ -30,11 +30,7 @@ class User < ApplicationRecord
   private
 
   def make_first_admin
-    if User.count == 1 
-      self.admin = true
-    else
-      self.admin = false
-    end
+    self.admin = true if self.new_record?
   end
 
   def downcase_email
