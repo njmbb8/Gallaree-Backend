@@ -8,7 +8,7 @@ class OrderController < ApplicationController
         user = User.find(cookies.signed[:user_id])
         if user
             if user.admin
-                render json: Order.all, status: :ok
+                render json: Order.all, each_serializer: OrderListSerializer, status: :ok
             else
                 render json: user.orders, status: :ok
             end
