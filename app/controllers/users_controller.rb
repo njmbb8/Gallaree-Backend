@@ -17,7 +17,8 @@ class UsersController < ApplicationController
                 address_line2: user_params[:billingAddr2],
                 city: user_params[:billingCity],
                 state: user_params[:billingState],
-                postal_code: user_params[:billingZip]
+                postal_code: user_params[:billingZip],
+                archived: false
             )
             @shipping = Address.new(
                 user_id: @user[:id],
@@ -26,6 +27,7 @@ class UsersController < ApplicationController
                 city: user_params[:sameAsShipping] ? user_params[:billingCity] : user_params[:shippingCity],
                 state: user_params[:sameAsShipping] ? user_params[:billingState] : user_params[:shippingState],
                 postal_code: user_params[:sameAsShipping] ? user_params[:billingZip] : user_params[:shippingZip],
+                archived: false
             )
             
             if @billing.save && @shipping.save
