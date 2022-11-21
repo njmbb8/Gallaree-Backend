@@ -11,36 +11,58 @@ class UsersController < ApplicationController
             password_confirmation: user_params[:password_confirmation]
         )
         if @user.save
-            customer_id = Stripe::Customer.create({
-                address: {
-                    line1: user_params[:billingAddr1],
-                    line2: user_params[:billingAddr2],
-                    city: user_params[:billingCity],
-                    state: user_params[:billingState],
-                    country: 'USA',
-                    postal_code: user_params[:billingZip]
-                },
-                email: @user.email,
-                name: "#{user_params[:firstname]} #{user_params[:lastname]}",
-                phone: user_params[:phone],
-                shipping: {
+            @billing = Address.new(
+                user_id: @user[:id],
+                address_line1: user_params[:billingAddr1],
+                address_line2: user_params[:billingAddr2],
+                city: user_params[:billingCity],
+                state: user_params[:billingState],
+                postal_code: user_params[:billingZip]
+            )
+            @shipping = Address.new(
+                user_id: @user[:id],
+                address_line1: user_params[:sameAsShipping] ? user_params[:billingAddr1] : user_params[:shippingAddr1],
+                address_line2: user_params[:sameAsShipping] ? user_params[:billingAddr2] : user_params[:shippingAddr2],
+                city: user_params[:sameAsShipping] ? user_params[:billingCity] : user_params[:shippingCity],
+                state: user_params[:sameAsShipping] ? user_params[:billingState] : user_params[:shippingState],
+                postal_code: user_params[:sameAsShipping] ? user_params[:billingZip] : user_params[:shippingZip],
+            )
+            
+            if @billing.save && @shipping.save
+                customer_id = Stripe::Customer.create({
                     address: {
-                        city: user_params[:sameAsShipping] ? user_params[:billingCity] : user_params[:shippingCity],
+                        line1: user_params[:billingAddr1],
+                        line2: user_params[:billingAddr2],
+                        city: user_params[:billingCity],
+                        state: user_params[:billingState],
                         country: 'USA',
-                        line1: user_params[:sameAsShipping] ? user_params[:billingAddr1] : user_params[:shippingAddr1],
-                        line2: user_params[:sameAsShipping] ? user_params[:billingAddr2] : user_params[:shippingAddr2],
-                        postal_code: user_params[:sameAsShipping] ? user_params[:billingZip] : user_params[:shippingZip],
-                        state: user_params[:sameAsShipping] ? user_params[:billingState] : user_params[:shippingState]
+                        postal_code: user_params[:billingZip]
                     },
+                    email: @user.email,
                     name: "#{user_params[:firstname]} #{user_params[:lastname]}",
-                    phone: user_params[:phone]
-                }
-            })[:id]
-            @user.update(stripe_id: customer_id)
-            @order = Order.create!(:user_id => @user.id, :status => 1)
-            # @user.send_confirmation_email!
-            cookies.permanent.signed[:user_id] = @user.id
-            render json: @user, status: :created
+                    phone: user_params[:phone],
+                    shipping: {
+                        address: {
+                            city: user_params[:sameAsShipping] ? user_params[:billingCity] : user_params[:shippingCity],
+                            country: 'USA',
+                            line1: user_params[:sameAsShipping] ? user_params[:billingAddr1] : user_params[:shippingAddr1],
+                            line2: user_params[:sameAsShipping] ? user_params[:billingAddr2] : user_params[:shippingAddr2],
+                            postal_code: user_params[:sameAsShipping] ? user_params[:billingZip] : user_params[:shippingZip],
+                            state: user_params[:sameAsShipping] ? user_params[:billingState] : user_params[:shippingState]
+                        },
+                        name: "#{user_params[:firstname]} #{user_params[:lastname]}",
+                        phone: user_params[:phone]
+                    }
+                })[:id]
+                @user.update(stripe_id: customer_id)
+                @order = Order.create!(:user_id => @user.id, :status => 1)
+                # @user.send_confirmation_email!
+                cookies.permanent.signed[:user_id] = @user.id
+                render json: @user, status: :created
+            else
+                @user.destroy
+                render json: {error: 'Double check address info'}, status: :unprocessable_entity
+            end
         else
             render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
         end
