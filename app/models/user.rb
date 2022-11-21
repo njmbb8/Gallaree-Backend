@@ -13,7 +13,7 @@ class User < ApplicationRecord
 
   validates :email, presence: true, uniqueness: true, format: { with: /\A[^@\s]+@[^@\s]+\z/, message: 'Invalid email' }
 
-  after_initialize :make_first_admin
+  before_create :make_first_admin
 
   def confrim!
     update_columns(confirmed_at: Time.current)
@@ -30,7 +30,7 @@ class User < ApplicationRecord
   private
 
   def make_first_admin
-    self.admin = true if self.new_record?
+    self.admin = true if User.first == nil
   end
 
   def downcase_email
