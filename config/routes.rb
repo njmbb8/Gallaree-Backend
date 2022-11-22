@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :order_items, only: [:create, :destroy, :update]
   resources :order, only: [:show, :index, :update]
   resources :payment_intent, only: [:create, :update]
-  resources :addresses, only: [:create]
+  resources :addresses, only: [:index, :create, :update, :destroy]
   resources :bio, only: [:index, :create]
   resources :webhook, only: [:create]
   resources :card, only: [:index, :create, :destroy]
