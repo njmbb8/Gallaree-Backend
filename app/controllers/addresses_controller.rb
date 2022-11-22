@@ -93,14 +93,19 @@ class AddressesController < ApplicationController
         if user
             address = user.addresses.find(params[:id])
             if address
+                updated_addresses = []
                 if address[:billing]
-                    user.addresses.where(archived: false, billing: false).last.update(billing: true)
+                    billing_addr = user.addresses.where(archived: false, billing: false).last
+                    billing_addr.update(billing: true)
+                    updated_addresses.push(billing_addr)
                 end
                 if address[:shipping]
-                    user.addresses.where(archived: false, shipping: false).last.update(shipping: true)
+                    shipping_addr = user.addresses.where(archived: false, shipping: false).last
+                    shipping_addr.update(shipping: true)
+                    updated_addresses.push(shipping_addr)
                 end
                 address.update(archived: true)
-                head :ok
+                render json: updated_addresses, status: :ok
             else
                 render json: {error: "could not find address"}, status: :not_found
             end
