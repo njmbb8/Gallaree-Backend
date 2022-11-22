@@ -2,7 +2,7 @@ class CardController < ApplicationController
     def index
         user = User.find(cookies.signed[:user_id])
         if user
-            cards = user.cards.where.not(archived: true)
+            cards = user.cards.where(archived: false)
             render json: cards, status: :ok
         else
             render json: {error: "you are not logged in"}, status: :forbidden
