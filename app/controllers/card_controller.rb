@@ -35,7 +35,8 @@ class CardController < ApplicationController
                     last4: stripe_card[:last4], 
                     exp_month: stripe_card[:exp_month], 
                     exp_year: stripe_card[:exp_year],
-                    brand: stripe_card[:brand]
+                    brand: stripe_card[:brand],
+                    archived: false
                 }
             )
             if card.save
