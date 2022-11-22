@@ -27,9 +27,18 @@ class CardController < ApplicationController
 
     def create
         user = User.find(cookies.signed[:user_id])
+        stripe_card = Stripe::PaymentMethod.retrieve(card_params[:stripe_id])[:card]
         if user
-            card = user.cards.create(card_params)
-            if card
+            card = user.cards.new(
+                {
+                    stripe_id: card_params[:stripe_id], 
+                    last4: stripe_card[:last4], 
+                    exp_month: stripe_card[:exp_month], 
+                    exp_year: stripe_card[:exp_year],
+                    brand: stripe_card[:brand]
+                }
+            )
+            if card.save
                 render json: card, status: :created
             else
                 render json: { error: 'could not save card' }, status: :unprocessable_entity
@@ -42,12 +51,6 @@ class CardController < ApplicationController
     private
 
     def card_params
-        params.require(:card).permit(
-            :stripe_id,
-            :last4,
-            :exp_month,
-            :exp_year,
-            :brand
-        )
+        params.permit(:stripe_id)
     end
 end
