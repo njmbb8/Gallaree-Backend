@@ -1,5 +1,4 @@
 class OrderController < ApplicationController
-    before_action :check_auth, only: [:show, :update]
     def show
         render json: @order, status: :ok
     end
@@ -26,14 +25,6 @@ class OrderController < ApplicationController
     end
 
     private
-
-    def check_auth
-        user = User.find(cookies.signed[:user_id])
-        @order = Order.find(params[:id])
-        render json: {error: "you are not logged in"}, status: :unauthorized unless user
-        render json: {error: "could not find order"}, status: :not_found unless @order
-        render json: {error: "you do not have permission for this order"}, status: :unauthorized unless user.admin || user.id == @order.user.id
-    end
 
     def order_params
         params.permit(:user_id, :order_status_id, :tracking, :shipping_id, :payment_intent)
