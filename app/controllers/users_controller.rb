@@ -18,7 +18,9 @@ class UsersController < ApplicationController
                 city: user_params[:billingCity],
                 state: user_params[:billingState],
                 postal_code: user_params[:billingZip],
-                archived: false
+                archived: false,
+                billing: true,
+                shipping: user_params[:sameAsShipping]
             )
             @shipping = Address.new(
                 user_id: @user[:id],
@@ -27,10 +29,18 @@ class UsersController < ApplicationController
                 city: user_params[:sameAsShipping] ? user_params[:billingCity] : user_params[:shippingCity],
                 state: user_params[:sameAsShipping] ? user_params[:billingState] : user_params[:shippingState],
                 postal_code: user_params[:sameAsShipping] ? user_params[:billingZip] : user_params[:shippingZip],
-                archived: false
+                archived: false,
+                billing: false,
+                shipping: !user_params[:sameAsShipping]
             )
-            
-            if @billing.save && @shipping.save
+
+            if !user_params[:sameAsShipping]
+                if !@shipping.save
+                    render json: {error: "check the shipping addess"}, status: :unprocessable_entity
+                end
+            end
+
+            if @billing.save
                 customer_id = Stripe::Customer.create({
                     address: {
                         line1: user_params[:billingAddr1],
@@ -45,12 +55,12 @@ class UsersController < ApplicationController
                     phone: user_params[:phone],
                     shipping: {
                         address: {
-                            city: user_params[:sameAsShipping] ? user_params[:billingCity] : user_params[:shippingCity],
+                            city: user_params[:shippingCity],
                             country: 'USA',
-                            line1: user_params[:sameAsShipping] ? user_params[:billingAddr1] : user_params[:shippingAddr1],
-                            line2: user_params[:sameAsShipping] ? user_params[:billingAddr2] : user_params[:shippingAddr2],
-                            postal_code: user_params[:sameAsShipping] ? user_params[:billingZip] : user_params[:shippingZip],
-                            state: user_params[:sameAsShipping] ? user_params[:billingState] : user_params[:shippingState]
+                            line1: user_params[:shippingAddr1],
+                            line2: user_params[:shippingAddr2],
+                            postal_code: user_params[:shippingZip],
+                            state: user_params[:shippingState]
                         },
                         name: "#{user_params[:firstname]} #{user_params[:lastname]}",
                         phone: user_params[:phone]
