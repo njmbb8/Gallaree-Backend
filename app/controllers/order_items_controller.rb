@@ -5,8 +5,8 @@ class OrderItemsController < ApplicationController
         if @order
             if @order.order_items.find_by(art_id: order_item_params[:art_id])
                 @order_item = @order.order_items.find_by(art_id: order_item_params[:art_id])
-                if (@order_item[:quantity] + order_item_params[:quantity]) <= @order_item.art[:quantity]
-                    if @order_item.update(quantity: @order_item[:quantity]+order_item_params[:quantity])
+                if @order_item[:quantity] + order_item_params[:quantity].to_i <= @order_item.art[:quantity]
+                    if @order_item.update(quantity: @order_item[:quantity]+order_item_params[:quantity].to_i)
                         render json: @order_item, status: :ok
                     else
                         render json: {error: "could not update cart"}, status: :unprocessable_entity
@@ -17,7 +17,7 @@ class OrderItemsController < ApplicationController
             else
                 @order_item = @order.order_items.new(order_item_params)
                 if @order_item[:quantity] <= @order_item.art[:quantity]
-                    if @order_item.art[:status] != 'For Sale'
+                    if @order_item.art[:status] == 'For Sale'
                         if @order_item.save
                             render json: @order_item, status: :ok
                         else
@@ -58,7 +58,7 @@ class OrderItemsController < ApplicationController
     end
 
     def destroy
-        @user = User.find(cookies[:user_id])
+        @user = User.find(cookies.signed[:user_id])
         if @user
             @order = @user.orders.last
             if @order
