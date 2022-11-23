@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :arts, only: [:index, :show, :create, :update, :destroy]
   resources :statuses, only: [:index]
-  resources :order_items, only: [:create, :destroy, :update]
+  resources :order_items, only: [:create, :update, :destroy]
   resources :order, only: [:show, :index, :update]
   resources :payment_intent, only: [:create, :update]
   resources :addresses, only: [:index, :create, :update, :destroy]
