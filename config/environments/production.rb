@@ -99,4 +99,17 @@ Rails.application.configure do
 
   #cors domain for production environment
   config.allowed_cors_origins = ["https://shai-art.netlify.app"]
+
+  # outgoing mail configuration
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    user_name: Rails.application.credentials.email[:address],
+    password: Rails.application.credentials.email[:password],
+    address: 'mail.shainaprinceart.com',
+    port: '465',
+    authentication: 'login',
+    enable_starttls_auto: true
+  }
 end
