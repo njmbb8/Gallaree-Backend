@@ -1,12 +1,10 @@
 class OrderSerializer < ActiveModel::Serializer
-  attributes :id, :order_total, :tracking, :payment_intent, :shipping_address, :stripe_fee, :total_with_fee, :items, :status
+  attributes :id, :order_total, :tracking, :payment_intent, :shipping_address, :stripe_fee, :total_with_fee, :status
   
-  def items
-    object.order_items.map{|item| OrderItemsSerializer.new(item)}
-  end
+  has_many :order_items
 
   def order_total
-    items.sum { |item| item.art.price * item.quantity }
+    object.order_items.sum { |item| item.art.price * item.quantity }
   end
 
   def stripe_fee
@@ -18,7 +16,6 @@ class OrderSerializer < ActiveModel::Serializer
   end
 
   def shipping_address
-    # byebug
     if !!object.shipping_id
       Address.find(object.shipping_id)
     else

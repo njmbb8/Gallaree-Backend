@@ -20,7 +20,6 @@ class OrderListSerializer < ActiveModel::Serializer
     end
   
     def shipping_address
-      # byebug
       if !!object.shipping_id
         Address.find(object.shipping_id)
       else
