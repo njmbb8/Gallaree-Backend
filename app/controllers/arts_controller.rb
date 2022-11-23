@@ -1,6 +1,4 @@
 class ArtsController < ApplicationController
-    rescue_from ActiveRecord::RecordNotSaved, with: :show_errors
-
     def index
         render json: Art.order(:created_at).reverse_order
     end
@@ -13,7 +11,7 @@ class ArtsController < ApplicationController
                     currency: 'usd',
                     unit_amount: @art.price * 100
                 },
-                active: @art.status_id == 2,
+                active: @art.status == "For Sale",
                 images: [polymorphic_url(@art.photo)],
                 package_dimensions:{
                     height: @art.height,
@@ -37,7 +35,7 @@ class ArtsController < ApplicationController
         @art = Art.find(params[:id])
         if @art
             product = {
-                active: @art.status_id == 2,
+                active: @art.status == "For Sale",
                 images: [polymorphic_url(@art.photo)],
                 package_dimensions:{
                     height: @art.height,
@@ -60,7 +58,7 @@ class ArtsController < ApplicationController
                 @art.product_code,
                 product
             )
-            render json: @art
+            render json: @art, status: :ok
         else
             render json: { error: "Art not found" }, status: :not_found
         end
