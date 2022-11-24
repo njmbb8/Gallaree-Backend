@@ -62,15 +62,21 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   # outgoing mail configuration
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_url_options = { :host => 'shainaprinceart.com' }
+  config.action_mailer.raise_delivery_errors = true
+  # Send email in development mode?
+  config.action_mailer.perform_deliveries = true
+
   config.action_mailer.smtp_settings = {
-    user_name: Rails.application.credentials.email[:address],
-    password: Rails.application.credentials.email[:password],
-    address: 'mail.shainaprinceart.com',
-    port: '465',
-    authentication: 'login',
-    enable_starttls_auto: true
+      address: "mail.shainaprinceart.com",
+      port: 465,
+      enable_starttls_auto: true,
+      ssl: true,
+      domain: 'shainaprinceart.com',
+      openssl_verify_mode: 'none',
+      user_name: Rails.application.credentials.email[:address],
+      password: Rails.application.credentials.email[:password],
+      authentication: :plain
   }
 end
