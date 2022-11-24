@@ -10,6 +10,7 @@ class PasswordResetsController < ApplicationController
 
     def create
         user = User.find_by(email: params[:email])
+        byebug
         if user.present?
             PasswordMailer.with(user: user).reset.deliver_later
             head :accepted
