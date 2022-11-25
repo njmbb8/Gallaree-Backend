@@ -79,4 +79,7 @@ Rails.application.configure do
       password: Rails.application.credentials.email[:password],
       authentication: :plain
   }
+
+  #URL for frontend
+  config.front_end = "http://localhost:3000/"
 end

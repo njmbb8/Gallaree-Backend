@@ -112,4 +112,7 @@ Rails.application.configure do
     authentication: 'login',
     enable_starttls_auto: true
   }
+
+  #URL for frontend
+  config.front_end = "https://shainaprinceart.com/"
 end
