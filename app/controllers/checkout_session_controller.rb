@@ -1,6 +1,6 @@
 class CheckoutSessionController < ApplicationController
     def create
-        user = User.find(cookis.signed[:user_id])
+        user = User.find(cookies.signed[:user_id])
         order = user.orders.last
         if user
             session = Stripe::Checkout::Session.create({
