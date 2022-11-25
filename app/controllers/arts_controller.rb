@@ -23,7 +23,7 @@ class ArtsController < ApplicationController
                 tax_code: 'txcd_99999999',
                 name: @art.title,
                 description: @art.description
-            })[:id]
+            })[:default_price]
             @art.update(product_code: id)
             render json: @art, status: :created
         else
