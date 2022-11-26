@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :statuses, only: [:index]
   resources :order_items, only: [:create, :update, :destroy]
   resources :order, only: [:show, :index, :update]
-  resources :payment_intent, only: [:create, :update]
+  resources :checkout_session, only: [:create]
   resources :addresses, only: [:index, :create, :update, :destroy]
   resources :bio, only: [:index, :create]
   resources :webhook, only: [:create]

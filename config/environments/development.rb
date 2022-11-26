@@ -81,5 +81,5 @@ Rails.application.configure do
   }
 
   #URL for frontend
-  config.front_end = "http://localhost:3000/"
+  config.front_end = "http://localhost:3000"
 end
