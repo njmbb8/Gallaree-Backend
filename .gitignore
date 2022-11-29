@@ -26,3 +26,6 @@
 /config/credentials/development.key
 
 /config/credentials/production.key
+
+#SSL Certs
+/config/certs

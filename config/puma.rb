@@ -15,11 +15,12 @@ worker_timeout 3600 if ENV.fetch("RAILS_ENV", "development") == "development"
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
-port ENV.fetch("PORT") { 4000 }
+rails_port = ENV.fetch("PORT") { 4000 }
 
 # Specifies the `environment` that Puma will run in.
 #
-environment ENV.fetch("RAILS_ENV") { "development" }
+rails_env = ENV.fetch("RAILS_ENV") { "development" }
+environment rails_env
 
 # Specifies the `pidfile` that Puma will use.
 pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
@@ -32,6 +33,19 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 #
 # workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 
+# Settings for SSL
+
+if rails_env == 'development'
+    ssl_bind(
+        '0.0.0.0',
+        rails_port,
+        key: ENV.fetch('SSL_KEY_FILE', "./config/certs/localhost-key.pem"),
+        cert: ENV.fetch('SSL_CERT_FILE', "./config/certs/localhost.pem"),
+        verify_mode: 'none'
+    )
+else 
+    port rails_port
+end
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code
 # before forking the application. This takes advantage of Copy On Write

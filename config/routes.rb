@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :webhook, only: [:create]
   resources :card, only: [:index, :create, :destroy]
   resources :setup_intent, only: [:create]
+  resources :payment_intent, only: [:index, :create, :update]
   post '/register', to: 'users#create'
   post '/login', to: 'sessions#create'
   get '/me', to: 'users#show'
