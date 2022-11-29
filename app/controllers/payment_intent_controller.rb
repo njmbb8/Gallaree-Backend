@@ -1,4 +1,9 @@
 class PaymentIntentController < ApplicationController
+    def index
+        user = User.find(cookies.signed[:user_id])
+        render json: user, serializer: CheckoutInfoSerializer, status: :ok 
+    end
+
     def create
         user = User.find(cookies.signed[:user_id])
         shipping_address = user.addresses.find(intent_params[:shipping_id])
@@ -12,7 +17,7 @@ class PaymentIntentController < ApplicationController
             confirm: true,
             customer: user[:stripe_id],
             off_session: false,
-            payment_mathod: intent_params[:payment_method],
+            payment_method: intent_params[:payment_method],
             payment_method_types: ['card'],
             receipt_email: user[:email],
             setup_future_usage: 'on_session',
@@ -25,8 +30,8 @@ class PaymentIntentController < ApplicationController
                     state: shipping_address[:state],
                     postal_code: shipping_address[:postal_code]
                 }
-            }
-
+            },
+            return_url: "#{Rails.configuration.frontend}/checkout/#{user.id}"
         )
         render json: { id: payment_intent[:id], client_secret: @payment_intent[:client_secret]}, status: :ok
     end
