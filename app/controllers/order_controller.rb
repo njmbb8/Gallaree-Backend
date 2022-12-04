@@ -9,7 +9,7 @@ class OrderController < ApplicationController
             if user.admin
                 render json: Order.where.not(status: 'New'), each_serializer: OrderListSerializer, status: :ok
             else
-                render json: user.orders.where.not(status: 'New'), status: :ok
+                render json: user.orders.where.not(status: 'New'), each_serializer: OrderListSerializer, status: :ok
             end
         else
             render json: {error: "you are not logged in"}, status: :unauthorized

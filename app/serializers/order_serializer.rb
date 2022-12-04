@@ -1,6 +1,15 @@
 class OrderSerializer < ActiveModel::Serializer
-  attributes :id, :order_total, :tracking, :payment_intent, :shipping_address, :stripe_fee, :total_with_fee, :status
-  
+  attributes  :id,
+              :order_total,
+              :tracking,
+              :payment_intent,
+              :shipping_address,
+              :stripe_fee,
+              :total_with_fee,
+              :status,
+              :place_time,
+              :ship_time
+
   has_many :order_items
 
   def order_total
