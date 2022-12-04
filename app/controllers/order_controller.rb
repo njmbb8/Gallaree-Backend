@@ -1,6 +1,14 @@
 class OrderController < ApplicationController
     def show
-        render json: @order, status: :ok
+        user = User.find(cookies.signed[:user_id])
+
+        if user.admin
+            order = Order.find(params[:id])
+        else
+            order = user.orders.find(params[:id]) 
+        end
+
+        render json: order, serializer: OrderSerializer, status: :ok
     end
 
     def index
