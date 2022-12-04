@@ -34,6 +34,7 @@ class PaymentIntentController < ApplicationController
             },
             return_url: "#{Rails.configuration.front_end}/order/#{@order.id}"
         )
+        order.update(payment_intent: @payment_intent[:id])
         render json: { id: @payment_intent[:id], client_secret: @payment_intent[:client_secret]}, status: :ok
     end
 
