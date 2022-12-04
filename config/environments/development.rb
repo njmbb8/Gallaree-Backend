@@ -56,10 +56,7 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   #cors domain for development environment
-  config.allowed_cors_origins = [
-    "https://localhost:3000", "http://localhost:3000",
-    "https://127.0.0.1:3000", "http://127.0.0.1:3000"
-  ]
+  config.allowed_cors_origins = ["http://localhost:3000"]
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
@@ -84,8 +81,5 @@ Rails.application.configure do
   }
 
   #URL for frontend
-  config.front_end = "https://localhost:3000"
-
-  #Force SSL
-  config.force_ssl = true
+  config.front_end = "http://localhost:3000/"
 end
