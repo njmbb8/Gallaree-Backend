@@ -13,45 +13,29 @@ class WebhookController < ApplicationController
             return false
         end
 
+        intent = event[:data][:object]
+        order = Order.find(intent[:metadata][:order_id])
+
         case event['type']
-        when 'charge.succeeded'
-            checkout_session = event['data']['object']
-            mark_as_pending
-            if checkout_session.status == 'succeeded'
-                fulfill_order
+        when 'payment_intent.succeeded'
+            order.order_items.each do |item|
+                item.art.update(quantity: item.art.quantity - item.quantity)
             end
-        when 'checkout.session.async_payment_succeeded'
-            fulfill_order
-        when 'checkout.session.async_payment_failed'
-            #handle failed payments
+            order.update(status: 'Ready To Ship')
+            order.user.order.create!(
+                status: 'New'
+            )
+        when 'payment_intent.processing'
+            order.update(status: 'Processing Payment')
+        when 'payment_intent.payment_failed'
+            order.update(status: 'Payment Failed', details: intent['last_payment_error']['message'])
+        when 'payment_intent.canceled'
+            order.order_items.each do |item|
+                item.art.update(quantity: item.art.quantity - item.quantity)
+            end
+            order.update(status: 'Canceled')
         end
     
         head :ok
-    end
-
-    private
-    def mark_as_pending
-        order = Order.find_by(payment_intent: params[:data][:object][:payment_intent])
-        if order
-            order.order_status_id = 2
-            order.order_items.each do |item|
-                art = Art.find(item.art_id)
-                art.quantity = art.quantity - item.quantity
-                art.save
-            end
-            order.save
-            user = order.user
-            new_order = user.orders.new(order_status_id: 1)
-            new_order.save
-        end
-    end
-
-    def fulfill_order
-        order = Order.find_by(payment_intent: params[:data][:object][:payment_intent])
-        
-        if order
-            order.status = 3
-            order.save
-        end
     end
 end
