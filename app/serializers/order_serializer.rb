@@ -4,11 +4,13 @@ class OrderSerializer < ActiveModel::Serializer
               :tracking,
               :payment_intent,
               :shipping_address,
+              :billing_address,
               :stripe_fee,
               :total_with_fee,
               :status,
               :place_time,
-              :ship_time
+              :ship_time,
+              :card_used
 
   has_many :order_items
 
@@ -28,7 +30,23 @@ class OrderSerializer < ActiveModel::Serializer
     if !!object.shipping_id
       Address.find(object.shipping_id)
     else
-      User.find(object.user.id).addresses.find_by(archived: false, shipping: true)
+      object.user.addresses.find_by(archived: false, shipping: true)
+    end
+  end
+
+  def billing_address
+    if !!object.billing_id
+      Address.find(object.billing_id)
+    else
+      object.user.addresses.find_by(archived: false, billing: true)
+    end
+  end
+
+  def card_used
+    if !!object.card_id
+      Card.find(object.card_id)
+    else
+      object.user.cards.where.not(archived: true).first
     end
   end
 end
