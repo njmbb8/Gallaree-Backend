@@ -25,10 +25,20 @@ class OrderController < ApplicationController
     end
 
     def update
-        if @order.update(order_params)
-            render json: @order, status: :ok
+        user = User.find(cookies.signed[:user_id])
+        order = Order.find(params[:id])
+        if user.admin
+            if order.status != 'Shipped'
+                if order.update(tracking: params.permit[:tracking], ship_time: Time.now)
+                    render json: order, status: :ok
+                else
+                    render json: { error: 'could not update order'}, status: :unprocessable_entity
+                end
+            else
+                render json: { error: 'order already shipped'}, status: :not_modified
+            end
         else
-            render json: {error: "could not update order"}, status: :unprocessable_entity
+            render json: {error: "only admins can ship orders"}, status: :forbidden
         end
     end
 
