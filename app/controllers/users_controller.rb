@@ -67,7 +67,7 @@ class UsersController < ApplicationController
                     }
                 })[:id]
                 @user.update(stripe_id: customer_id)
-                @order = Order.create!(:user_id => @user.id, :status => 1)
+                @order = Order.create!(:user_id => @user.id, :status => 'New')
                 @user.send_confirmation_email!
                 cookies.permanent.signed[:user_id] = @user.id
                 render json: @user, status: :created
