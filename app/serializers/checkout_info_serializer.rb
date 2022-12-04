@@ -1,4 +1,12 @@
 class CheckoutInfoSerializer < ActiveModel::Serializer
-    has_many :cards
-    has_many :addresses
+    
+    attributes :cards, :addresses
+
+    def cards
+        object.cards.where(archived: false)
+    end
+
+    def addresses
+        object.addresses.where(archived: false)
+    end
 end
