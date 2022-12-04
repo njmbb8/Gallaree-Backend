@@ -5,7 +5,7 @@ class OrderController < ApplicationController
         if user.admin
             order = Order.find(params[:id])
         else
-            order = user.orders.find(params[:id]) 
+            order = user.orders.find(params[:id])
         end
 
         render json: order, serializer: OrderSerializer, status: :ok
