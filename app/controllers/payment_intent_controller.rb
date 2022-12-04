@@ -1,4 +1,7 @@
 class PaymentIntentController < ApplicationController
+
+    wrap_parameters false
+
     def index
         user = User.find(cookies.signed[:user_id])
         render json: user, serializer: CheckoutInfoSerializer, status: :ok 
@@ -11,13 +14,11 @@ class PaymentIntentController < ApplicationController
         @payment_intent = Stripe::PaymentIntent.create(
             amount: calculate_total,
             currency: 'usd',
-            automatic_payment_methods:{
-                enabled: false
-            },
             confirm: true,
             customer: user[:stripe_id],
+            metadata: {order_id: @order.id},
             off_session: false,
-            payment_method: intent_params[:payment_method],
+            payment_method: intent_params[:payment_method_id],
             payment_method_types: ['card'],
             receipt_email: user[:email],
             setup_future_usage: 'on_session',
@@ -31,37 +32,9 @@ class PaymentIntentController < ApplicationController
                     postal_code: shipping_address[:postal_code]
                 }
             },
-            return_url: "#{Rails.configuration.frontend}/checkout/#{user.id}"
+            return_url: "#{Rails.configuration.front_end}/order/#{@order.id}"
         )
-        render json: { id: payment_intent[:id], client_secret: @payment_intent[:client_secret]}, status: :ok
-    end
-
-    def update
-        @order = Order.find(params[:id].to_i)
-        address = Address.find(@order.shipping_id)
-        if @order
-            if @order.user_id == cookies.signed[:user_id]
-                Stripe::PaymentIntent.update(@order.payment_intent, {
-                    amount: calculate_total,
-                    shipping: {
-                        address: {
-                            city: address.city,
-                            country: address.country,
-                            line1: address.address_line1,
-                            line2: address.address_line2,
-                            postal_code: address.postal_code,
-                            state: address.state
-                        },
-                        name: "#{@order.user.firstname} #{@order.user.lastname}"
-                    }
-                })
-                render json: @order, status: :ok
-            else
-                render json: {error: "this order does not belong to you"}, status: :unauthorized
-            end
-        else
-            render json: {error: "order not found"}, status: :not_found
-        end
+        render json: { id: @payment_intent[:id], client_secret: @payment_intent[:client_secret]}, status: :ok
     end
 
     private
