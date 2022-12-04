@@ -22,7 +22,7 @@ class WebhookController < ApplicationController
                 item.art.update(quantity: item.art.quantity - item.quantity)
             end
             order.update(status: 'Ready To Ship')
-            order.user.order.create!(
+            order.user.orders.create!(
                 status: 'New'
             )
         when 'payment_intent.processing'
