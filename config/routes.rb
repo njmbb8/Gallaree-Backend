@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :arts, only: [:index, :show, :create, :update, :destroy]
   resources :statuses, only: [:index]
   resources :order_items, only: [:create, :update, :destroy]
-  resources :order, only: [:show, :index, :update]
+  resources :order, only: [:show, :index, :update, :destroy]
   resources :checkout_session, only: [:create]
   resources :addresses, only: [:index, :create, :update, :destroy]
   resources :bio, only: [:index, :create]
