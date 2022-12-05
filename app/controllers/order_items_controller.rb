@@ -7,7 +7,7 @@ class OrderItemsController < ApplicationController
                 @order_item = @order.order_items.find_by(art_id: order_item_params[:art_id])
                 if @order_item[:quantity] + order_item_params[:quantity].to_i <= @order_item.art[:quantity]
                     if @order_item.update(quantity: @order_item[:quantity]+order_item_params[:quantity].to_i)
-                        render json: @order_item, status: :ok
+                        render json: @order, status: :ok
                     else
                         render json: {error: "could not update cart"}, status: :unprocessable_entity
                     end
@@ -19,7 +19,7 @@ class OrderItemsController < ApplicationController
                 if @order_item[:quantity] <= @order_item.art[:quantity]
                     if @order_item.art[:status] == 'For Sale'
                         if @order_item.save
-                            render json: @order_item, status: :ok
+                            render json: @order, status: :ok
                         else
                             render json: {error: "unable to add item to cart"}, status: :unprocessable_entity
                         end
@@ -42,7 +42,7 @@ class OrderItemsController < ApplicationController
             if @order_item
                 if @order_item[:quantity] <= @order_item.art[:quantity]
                     if @order_item.update(order_item_params)
-                        render json: @order_item, status: :ok
+                        render json: @order, status: :ok
                     else
                         render json: {error: 'could not update item'}, status: :unprocessable_entity
                     end
@@ -65,7 +65,7 @@ class OrderItemsController < ApplicationController
                 @order_item = @order.order_items.find(params[:id])
                 if @order_item
                     @order_item.destroy
-                    head :ok
+                    render json: @order, status: :ok
                 else
                     render json: {error: "could not find order item"}, status: :not_found
                 end
