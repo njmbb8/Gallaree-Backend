@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_04_223752) do
+ActiveRecord::Schema.define(version: 2022_12_05_000231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -121,6 +121,8 @@ ActiveRecord::Schema.define(version: 2022_12_04_223752) do
     t.datetime "place_time"
     t.integer "billing_id"
     t.integer "card_id"
+    t.datetime "cancel_time"
+    t.datetime "cancellation_reason"
   end
 
   create_table "statuses", force: :cascade do |t|

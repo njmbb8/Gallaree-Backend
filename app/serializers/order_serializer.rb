@@ -10,7 +10,8 @@ class OrderSerializer < ActiveModel::Serializer
               :status,
               :place_time,
               :ship_time,
-              :card_used
+              :card_used,
+              :cancellation_reason
 
   has_many :order_items
 
