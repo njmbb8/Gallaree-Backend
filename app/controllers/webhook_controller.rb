@@ -25,8 +25,6 @@ class WebhookController < ApplicationController
             order.user.orders.create!(
                 status: 'New'
             )
-        when 'payment_intent.processing'
-            order.update(status: 'Processing Payment')
         when 'payment_intent.payment_failed'
             order.update(status: 'Payment Failed', details: intent['last_payment_error']['message'])
         when 'payment_intent.canceled'
@@ -34,6 +32,10 @@ class WebhookController < ApplicationController
                 item.art.update(quantity: item.art.quantity - item.quantity)
             end
             order.update(status: 'Canceled')
+        else
+            if order
+                order.update(status: event[:type].split('.')[1])
+            end
         end
     
         head :ok
