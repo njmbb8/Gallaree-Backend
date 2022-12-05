@@ -42,6 +42,23 @@ class OrderController < ApplicationController
         end
     end
 
+    def destroy
+        user = User.find(cookies.signed[:user_id])
+        order = Order.find(params[:id])
+        if user.admin || order.user.id == user.id
+            if order.status == 'requires_payment_method' || order.status == 'requires_capture' || order.status == 'requires_confirmation' || order.status == 'requires_action' || order.status == 'processing'
+                Stripe::PaymentIntent.cancel(order[:payment_intent])
+            elsif user.admin
+                Stripe::Refund.create({payment_intent: order[:payment_intent]})
+                order.update(cancel_time: Time.now, status: 'Refunded')
+            else
+                render json: {error: 'order is not in a state to be canceled'}
+            end
+        else
+            render json: {error: 'you do not have permission to edit this order'}
+        end
+    end
+
     private
 
     def order_params
