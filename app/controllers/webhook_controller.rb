@@ -32,10 +32,6 @@ class WebhookController < ApplicationController
                 item.art.update(quantity: item.art.quantity - item.quantity)
             end
             order.update(status: 'Canceled')
-        else
-            if order
-                order.update(status: event[:type].split('.')[1])
-            end
         end
     
         head :ok

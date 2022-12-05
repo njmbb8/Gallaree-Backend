@@ -34,7 +34,7 @@ class PaymentIntentController < ApplicationController
             },
             return_url: "#{Rails.configuration.front_end}/order/#{@order.id}"
         )
-        order.update(
+        @order.update(
             payment_intent: @payment_intent[:id], 
             place_time: Time.now, 
             shipping_id: shipping_address.id, 
