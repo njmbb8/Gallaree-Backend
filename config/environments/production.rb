@@ -95,7 +95,7 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
   #making activestorage work
-  config.active_storage.service = :digitalocean
+  config.active_storage.service = :local
 
   #cors domain for production environment
   config.allowed_cors_origins = ["https://shaiprinceart.com, https://shainaprinceart.com"]

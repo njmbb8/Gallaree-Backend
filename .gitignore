@@ -33,3 +33,5 @@
 /public/*
 /storage/*
 /config/secrets.yml
+
+/.tomo/*
