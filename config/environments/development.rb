@@ -68,16 +68,16 @@ Rails.application.configure do
   # Send email in development mode?
   config.action_mailer.perform_deliveries = true
 
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-      address: "mail.shainaprinceart.com",
-      port: 465,
-      enable_starttls_auto: true,
-      ssl: true,
-      domain: 'shainaprinceart.com',
-      openssl_verify_mode: 'none',
-      user_name: Rails.application.credentials.email[:address],
-      password: Rails.application.credentials.email[:password],
-      authentication: :plain
+    user_name: Rails.application.credentials.email[:address],
+    password: Rails.application.credentials.email[:password],
+    address: 'smtp.ionos.com',
+    port: '587',
+    authentication: 'login',
+    enable_starttls_auto: true
   }
 
   #URL for frontend

@@ -108,8 +108,8 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     user_name: Rails.application.credentials.email[:address],
     password: Rails.application.credentials.email[:password],
-    address: 'mail.shainaprinceart.com',
-    port: '465',
+    address: 'smtp.ionos.com',
+    port: '587',
     authentication: 'login',
     enable_starttls_auto: true
   }
