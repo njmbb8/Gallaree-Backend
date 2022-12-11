@@ -99,7 +99,7 @@ Rails.application.configure do
 
   #cors domain for production environment
   config.allowed_cors_origins = ["https://shaiprinceart.com, https://shainaprinceart.com",
-                                  "https://www.shaiprinceart.com, https://www.shainaprinceart.com"]
+                                  "https://www.shaiprinceart.com", "https://www.shainaprinceart.com"]
 
   # outgoing mail configuration
   config.action_mailer.perform_deliveries = true
