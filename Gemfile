@@ -43,14 +43,6 @@ gem 'actionmailer'
 #stripe for accepting payments
 gem 'stripe'
 
-group :development do
-  # Including capistrano cookbook will automatically includes
-  # the correct version of capistrano and other plugins
-  gem 'capistrano-cookbook', require: false
-  gem 'capistrano-rbenv', github: 'capistrano/rbenv', require: false
-  gem 'capistrano-rails'
-end
-
 #support for ed25519
 gem  'ed25519', '~> 1.2'
 gem 'bcrypt_pbkdf', '~> 1.0'

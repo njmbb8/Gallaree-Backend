@@ -98,7 +98,7 @@ Rails.application.configure do
   config.active_storage.service = :digitalocean
 
   #cors domain for production environment
-  config.allowed_cors_origins = ["https://shai-art.netlify.app"]
+  config.allowed_cors_origins = ["https://shaiprinceart.com, https://shainaprinceart.com"]
 
   # outgoing mail configuration
   config.action_mailer.perform_deliveries = true
@@ -114,5 +114,5 @@ Rails.application.configure do
   }
 
   #URL for frontend
-  config.front_end = "https://shainaprinceart.com/"
+  config.front_end = "https://shaiprinceart.com/"
 end

@@ -32,3 +32,4 @@
 
 /public/*
 /storage/*
+/config/secrets.yml
