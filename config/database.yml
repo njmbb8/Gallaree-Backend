@@ -83,4 +83,4 @@ production:
   <<: *default
   database: backend_production
   username: backend
-  password: <%= ENV['BACKEND_DATABASE_PASSWORD'] %>
+  password: <%= Rails.application.credentials.postgres.password %>
