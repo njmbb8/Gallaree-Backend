@@ -4,7 +4,7 @@ class BlogSerializer < ActiveModel::Serializer
     has_many :comments
     belongs_to :user
 
-    attributes :title, :body, :created_at, :updated_at
+    attributes :id, :title, :body, :created_at, :updated_at
 
     def photo
         rails_blob_path(object.photo, only_path: true)
