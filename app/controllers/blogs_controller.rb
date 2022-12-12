@@ -4,7 +4,7 @@ class BlogsController < ApplicationController
   before_action :find_blog, except: [:index, :create]
 
   def index
-    render json: Blog.all, status: :ok
+    render json: Blog.all, status: :ok, each_serializer: BlogListSerializer, Serializer: BlogListSerializer
   end
 
   def show
