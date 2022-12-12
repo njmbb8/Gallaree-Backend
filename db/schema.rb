@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_05_000231) do
+ActiveRecord::Schema.define(version: 2022_12_12_051536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,14 @@ ActiveRecord::Schema.define(version: 2022_12_05_000231) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "blogs", force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "cards", force: :cascade do |t|
     t.string "stripe_id"
     t.integer "last4"
@@ -90,6 +98,14 @@ ActiveRecord::Schema.define(version: 2022_12_05_000231) do
     t.boolean "archived"
     t.integer "user_id"
     t.string "brand"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.text "body"
+    t.integer "user_id"
+    t.integer "blog_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "order_items", force: :cascade do |t|
