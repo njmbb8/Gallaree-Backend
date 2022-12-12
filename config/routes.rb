@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   resources :card, only: [:index, :create, :destroy]
   resources :setup_intent, only: [:create]
   resources :payment_intent, only: [:index, :create, :update]
+  resources :blogs, only: [:index, :show, :create, :update, :destroy]
+  resources :comments, only: [:index, :show, :create, :update, :destroy]
   post '/register', to: 'users#create'
   post '/login', to: 'sessions#create'
   get '/me', to: 'users#show'
