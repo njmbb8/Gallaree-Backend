@@ -15,6 +15,9 @@ class User < ApplicationRecord
 
   before_create :make_first_admin
 
+  has_many :blogs
+  has_many :comments
+
   def confrim!
     update_columns(confirmed_at: Time.current)
   end
