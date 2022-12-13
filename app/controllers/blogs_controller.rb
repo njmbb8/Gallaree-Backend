@@ -1,7 +1,9 @@
 class BlogsController < ApplicationController
 
-  before_action :authorize, except: [:show, :index]
+  before_action :authorize_for_post, except: [:show, :index]
   before_action :find_blog, except: [:index, :create]
+
+  wrap_parameters false
 
   def index
     render json: Blog.all, status: :ok, each_serializer: BlogListSerializer, Serializer: BlogListSerializer
@@ -12,7 +14,7 @@ class BlogsController < ApplicationController
   end
 
   def create
-    blog = Blog.new(blog_params)
+    blog = @user.blogs.new(blog_params)
     if blog.save
       render json: blog, status: :ok
     else
@@ -39,9 +41,9 @@ end
 
 private
 
-def authorize
-  user = User.find(cookies.signed[:user_id])
-  render json: {error: "you are not signed in or do not have permission to edit blogs"}, status: :forbidden if user.nil? || !user.admin
+def authorize_for_post
+  @user = User.find(cookies.signed[:user_id])
+  render json: {error: "you are not signed in or do not have permission to edit blogs"}, status: :forbidden if @user.nil? || !@user.admin
 end
 
 def find_blog
@@ -50,5 +52,5 @@ def find_blog
 end
 
 def blog_params
-  params.permit(:title, :body)
+  params.permit(:title, :body, :photo)
 end

@@ -3,13 +3,13 @@ class BlogSerializer < ActiveModel::Serializer
 
     belongs_to :user
 
-    attributes :id, :title, :body, :created_at, :updated_at
+    attributes :id, :title, :body, :created_at, :updated_at, :comments, :photo
 
     def photo
         rails_blob_path(object.photo, only_path: true)
     end
 
     def comments
-        OrderSerializer.new(object.comments, each_serializer: CommentSerializer)
+        ActiveModel::SerializableResource.new(object.comments.where(archived: false), each_serializer: CommentSerializer).as_json
     end
 end

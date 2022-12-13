@@ -1,12 +1,15 @@
 class CommentsController < ApplicationController
-  
+
+  wrap_parameters false
+
   before_action :authorize, except: [:create]
 
   def create
     user = User.find(cookies.signed[:user_id])
     if user
       comment = user.comments.new(comment_params)
-      if comment
+      comment.archived = false
+      if comment.save
         render json: comment, status: :ok
       else
         render json: {error: "unable to save comment"}, status: :unprocessable_entity
@@ -17,7 +20,7 @@ class CommentsController < ApplicationController
   end
 
   def update
-    if @comment.update(params.permit)
+    if @comment.update(comment_params)
       render json: @comment, status: :ok
     else
       render json: {error: "comment could not be updated"}, status: :unprocessable_entity
@@ -39,9 +42,9 @@ class CommentsController < ApplicationController
   end
 
   def authorize
-    @user = user.find(cookies.signed[params[:id]])
-    @comment = user.comment.find(params[:id])
-    render json: {error: "You are not authorized or signed in"}, status: :forbidden if @user.nil? || !user.admin
+    @user = User.find(cookies.signed[:user_id])
+    @comment = @user.comments.find(params[:id])
+    render json: {error: "You are not authorized or signed in"}, status: :forbidden if @user.nil? || !@user.admin
     render json: {error: "Comment does not exist"}, status: :not_found if @comment.nil?
   end
 end
