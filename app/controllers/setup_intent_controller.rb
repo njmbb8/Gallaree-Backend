@@ -4,7 +4,8 @@ class SetupIntentController < ApplicationController
         if user
             @intent = Stripe::SetupIntent.create({
                 customer: user.stripe_id,
-                usage: 'on_session'
+                usage: 'on_session',
+                payment_method_types:['card']
             })
             render json: {clientSecret: @intent[:client_secret]}, status: :created
         else
