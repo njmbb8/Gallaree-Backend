@@ -8,7 +8,8 @@ class UsersController < ApplicationController
             firstname: user_params[:firstname], 
             lastname: user_params[:lastname], 
             password: user_params[:password], 
-            password_confirmation: user_params[:password_confirmation]
+            password_confirmation: user_params[:password_confirmation],
+            phone: user_params[:phone]
         )
         if @user.save
             @billing = Address.new(
