@@ -5,7 +5,7 @@ This repo is the code that supports an api for artist's websites that will serve
 ## Software used
 There are many technologies used which can be found in the gem file; the heavy lifting, however, is done by: 
 
-- Rails 6.1.4
+- Rails
 - ActiveRecord
 - ActiveStorage
 - PostgreSQL
@@ -15,10 +15,12 @@ There are many technologies used which can be found in the gem file; the heavy l
 ## Currently Implemented
 
 - User registration and authentication
-- Upload, view, edit and delete(CRUD) access for art pieces to be displayed on the site
-- CORS restrictions are ironed out for specific hosts
+- Storage of artworks and information surrounding them
+- Storage of data needed for an about page
+- A blog  with a photo per post and comments
 - Cart and checkout are processed on the back end using Stripe
 
 ## To Do
-- Blog space for posts detailing new art pieces, events surrounding artist, etc
-- Support for multiple artists' front ends using api keys
+- Messaging
+- Automate email notifications for receipts, new messages, etc. 
+- Multitenancy to turn this into a Saas sidehustle
