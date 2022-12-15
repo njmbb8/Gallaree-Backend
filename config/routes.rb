@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :payment_intent, only: [:index, :create, :update]
   resources :blogs, only: [:index, :show, :create, :update, :destroy]
   resources :comments, only: [:index, :show, :create, :update, :destroy]
+  resources :conversations, only: [:index, :show, :create, :update]
   post '/register', to: 'users#create'
   post '/login', to: 'sessions#create'
   get '/me', to: 'users#show'
