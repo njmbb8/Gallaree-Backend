@@ -19,6 +19,7 @@ class ConversationsController < ApplicationController
         if cookies.signed[:user_id]
             user = User.find(cookies.signed[:user_id])
             if user
+                byebug
                 message = user.conversation.messages.new({
                     body: message_params
                 })
