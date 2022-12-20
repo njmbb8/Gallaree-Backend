@@ -1,14 +1,14 @@
 class ConversationSerializer < ActiveModel::Serializer
-    attributes :recipient, :sender_info
+    attributes :sender
 
     has_many :messages
 
-    def sender_info
-        if object.sender
+    def sender
+        if object.user
             {
-                name: "#{object.sender.firstname} #{object.sender.lastname}",
-                email: object.sender.email,
-                phone: object.sender.phone
+                name: "#{object.user.firstname} #{object.user.lastname}",
+                email: object.user.email,
+                phone: object.user.phone
             }
         else
             {

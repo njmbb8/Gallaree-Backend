@@ -1,7 +1,8 @@
 class MessagePreviewSerializer < ActiveModel::Serializer
-    attributes :last_fifteen, :created_at, :read
+    attributes :first_fifteen, :created_at, :read
 
-    def last_fifteen
-        object.truncate(object.body, 15)
+    def first_fifteen
+        return "New conversation" if object.nil?
+        return object.body.truncate(15)
     end
 end
