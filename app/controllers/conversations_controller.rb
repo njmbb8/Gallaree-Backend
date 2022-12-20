@@ -24,7 +24,6 @@ class ConversationsController < ApplicationController
                     user_id: user.id,
                     body: message_params[:body]
                 )
-                byebug
                 if message.save
                     render json: message, status: :ok
                 else
