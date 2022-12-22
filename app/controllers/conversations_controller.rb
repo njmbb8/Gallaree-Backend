@@ -69,9 +69,9 @@ class ConversationsController < ApplicationController
     def authorize
         render json: { error: "you are not signed in" }, status: :unauthorized unless cookies.signed[:user_id]
         @user = User.find(cookies.signed[:user_id])
-        @conversation = Conversation.find(params[:id])
+        @conversation = params[:id].to_i.to_s == params[:id] ? Conversation.find(params[:id]) : @user.conversation
         render json: { error: "conversation does not exist" }, status: :not_found unless @conversation
-        render json: { error: "this is an A-B conversation, C yo way out" }, status: :forbidden unless @user.admin || @user.id == conversation.sender_id
+        render json: { error: "this is an A-B conversation, C yo way out" }, status: :forbidden unless @user.admin || @user.id == @conversation.user_id
     end
 
     def conversation_params
