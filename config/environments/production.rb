@@ -98,7 +98,7 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   #cors domain for production environment
-  config.allowed_cors_origins = ["https://shaiprinceart.com, https://shainaprinceart.com",
+  config.allowed_cors_origins = ["https://shaiprinceart.com", "https://shainaprinceart.com",
                                   "https://www.shaiprinceart.com", "https://www.shainaprinceart.com"]
 
   # outgoing mail configuration
