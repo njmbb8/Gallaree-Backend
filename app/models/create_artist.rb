@@ -1,0 +1,2 @@
+class CreateArtist < ApplicationRecord
+end
