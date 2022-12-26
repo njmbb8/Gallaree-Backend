@@ -58,6 +58,8 @@ class ConversationsController < ApplicationController
             body: message_params[:body]
         })
         if message.save
+            recipients = Conversation.find(1).messages.pluck(:user_id).uniq.map {|user_id| User.find(user_id)}.filter {|user| user.id != @user.id}
+            recipients.each {|recipient| MessageMailer.with(sender: @user, recipient: recipient, message: message).notify.deliver_now}
             render json: @conversation, status: :ok
         else
             render json: { error: "message could not be saved" }, status: :unprocessable_entity

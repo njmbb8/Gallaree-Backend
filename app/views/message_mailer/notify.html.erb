@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hi, <%= @recipient.firstname %></h1>
+    <p>
+      You have received the following message from <%= @sender.firstname%> <%= @sender.lastname%>,
+      to respond, please sign in to <a href="https://shaiprinceart.com">Shai Prince Art</a><br>
+    </p>
+    <p>
+      <%= @message.body %>
+    </p>
+  </body>
+</html>
