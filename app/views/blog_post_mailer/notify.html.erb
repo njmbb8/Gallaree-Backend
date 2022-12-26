@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1><%=@post.title %></h1>
+
+    <%= image_tag attachments[@post.photo.filename.to_s].url%>
+
+    <p><%= @post.body.truncate(50)%></p>
+
+    <a href=<%="#{Rails.application.config.front_end}/blog/#{@post.id}"%>>See the full post and leave a comment</a>
+  </body>
+</html>

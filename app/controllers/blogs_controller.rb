@@ -16,6 +16,8 @@ class BlogsController < ApplicationController
   def create
     blog = @user.blogs.new(blog_params)
     if blog.save
+      recipients = User.where.not(id: @user.id)
+      recipients.each {|recipient| BlogPostMailer.with(recipient: recipient, post: blog).notify.deliver_now}
       render json: blog, status: :ok
     else
       render json: {error: "could not save blog post"}, status: :unprocessable_entity
