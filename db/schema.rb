@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_23_225520) do
+ActiveRecord::Schema.define(version: 2022_12_28_031233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 2022_12_23_225520) do
     t.integer "weight"
     t.string "product_code"
     t.string "status"
+    t.string "stripe_price"
   end
 
   create_table "bios", force: :cascade do |t|
