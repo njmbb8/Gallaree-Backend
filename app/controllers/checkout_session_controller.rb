@@ -13,7 +13,7 @@ class CheckoutSessionController < ApplicationController
                 client_reference_id: order[:id],
                 currency: 'usd',
                 customer: user[:stripe_id],
-                line_items: order.order_items.map{|item| {price: item.art[:product_code], quantity: item[:quantity]}},
+                line_items: order.order_items.map{|item| {price: item.art[:stripe_price], quantity: item[:quantity]}},
             }
             if address_params[:address]
                 session_options[:payment_intent_data] = {

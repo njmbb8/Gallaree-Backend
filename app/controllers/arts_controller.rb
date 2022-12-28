@@ -6,7 +6,7 @@ class ArtsController < ApplicationController
     def create
         @art = Art.new(art_params)
         if @art.save
-            id = Stripe::Product.create({
+            Stripe::Product.create({
                 default_price_data:{
                     currency: 'usd',
                     unit_amount: @art.price * 100
@@ -23,8 +23,8 @@ class ArtsController < ApplicationController
                 tax_code: 'txcd_99999999',
                 name: @art.title,
                 description: @art.description
-            })[:default_price]
-            @art.update(product_code: id)
+            }).to_h=>{id:, default_price:}
+            @art.update(product_code: id, stripe_price: default_price )
             render json: @art, status: :created
         else
             render json: { error: "Art did not save" }, status: :unprocessable_entity
