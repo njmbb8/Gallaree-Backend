@@ -19,7 +19,10 @@ class WebhookController < ApplicationController
         case event['type']
         when 'payment_intent.succeeded'
             order.order_items.each do |item|
-                item.art.update(quantity: item.art.quantity - item.quantity)
+                item.art.update(
+                    quantity: item.art.quantity - item.quantity,
+                    status: item.art.quantity - item.quantity > 0 ? "For Sale" : "Not For Sale"
+                )
             end
             order.update(status: 'Ready To Ship')
             order.user.orders.create!(

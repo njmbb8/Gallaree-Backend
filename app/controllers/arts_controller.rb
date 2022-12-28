@@ -35,7 +35,7 @@ class ArtsController < ApplicationController
         @art = Art.find(params[:id])
         if @art
             product = {
-                active: @art.status == "For Sale",
+                active: @art.status == "For Sale" && art_params[:quantity].to_i >= 0,
                 images: [polymorphic_url(@art.photo)],
                 package_dimensions:{
                     height: @art.height,
@@ -53,6 +53,7 @@ class ArtsController < ApplicationController
                     product: @art.product_code
                 })
             end
+            art_params[:quantity].to_i <= 0 ? art_params[:status] = "Sold Out" : art_params[:status] = @art.status
             @art.update(art_params)
             Stripe::Product.update(
                 @art.product_code,
