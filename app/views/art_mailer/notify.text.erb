@@ -1,0 +1,5 @@
+<%=@art.title%>
+
+<%=@art.description.truncate(50)%>
+
+Check it Out Here: <%="#{Rails.application.config.front_end}/art/#{@art.id}"%>

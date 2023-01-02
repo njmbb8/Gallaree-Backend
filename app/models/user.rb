@@ -35,7 +35,7 @@ class User < ApplicationRecord
   private
 
   def make_first_admin
-    self.admin = true if User.first == nil
+    User.first == nil ? self.admin = true : self.admin = false
   end
 
   def downcase_email

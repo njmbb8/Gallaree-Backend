@@ -25,6 +25,8 @@ class ArtsController < ApplicationController
                 description: @art.description
             }).to_h=>{id:, default_price:}
             @art.update(product_code: id, stripe_price: default_price )
+            recipients = User.where(admin: false)
+            recipients.each{|recipient| ArtMailer.with(recipient: recipient, art: @art).notify.deliver_now}
             render json: @art, status: :created
         else
             render json: { error: "Art did not save" }, status: :unprocessable_entity
