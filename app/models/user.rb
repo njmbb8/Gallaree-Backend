@@ -20,6 +20,8 @@ class User < ApplicationRecord
 
   has_one :conversation
 
+  has_many :orders
+
   def confrim!
     update_columns(confirmed_at: Time.current)
   end
