@@ -1,4 +1,5 @@
 class ArtsController < ApplicationController
+    before_action :authorize, except: [:index]
     def index
         render json: Art.order(:created_at).reverse_order
     end
@@ -86,5 +87,11 @@ class ArtsController < ApplicationController
 
     def art_params
         params.permit(:title, :description, :price, :status, :photo, :quantity, :length, :height, :width, :weight)
+    end
+
+    def authorize
+        render json: {error: "you are not signed in"}, status: :forbidden if !cookies.signed[:user_id]
+        @user = User.find(cookies.signed[:user_id])
+        render json: {error: "you are not authorized"}, status: :unauthorized if !user.admin
     end
 end
