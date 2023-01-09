@@ -46,3 +46,5 @@ gem 'stripe'
 #support for ed25519
 gem  'ed25519', '~> 1.2'
 gem 'bcrypt_pbkdf', '~> 1.0'
+
+gem "image_processing", "~> 1.0"

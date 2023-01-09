@@ -30,6 +30,7 @@ class OrderController < ApplicationController
         if user.admin
             if order.status != 'Shipped'
                 if order.update(tracking: params.permit[:tracking], ship_time: Time.now, status: 'Shipped')
+                    OrderMailer.with(order: order).shipped.deliver_now
                     render json: order, status: :ok
                 else
                     render json: { error: 'could not update order'}, status: :unprocessable_entity

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hi, <%= @order.user.firstname %></h1>
+    <h2>Your order has been placed and is awaiting shipment</h2>
+
+    <table>
+        <thead>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                title
+            </td>
+            <td>
+                price
+            </td>
+            <td>
+                quantity
+            </td>
+            <td>
+                total
+            </td>
+        </thead>
+        <tbody>
+            <%@order.order_items.each do |item|%>
+                <tr>
+                    <td>
+                        <%if item.art.photo.representable?%>
+                            <%= image_tag item.art.photo.representation(resize_to_fit: [100, 100]) %>
+                        <% end %>
+                    </td>
+                    <td>
+                        <%= item.art.title%>
+                    </td>
+                    <td>
+                        <%= item.art.price%>
+                    </td>
+                    <td>
+                        x<%= item.quantity%>
+                    </td>
+                    <td>
+                        <%= item.art.price * item.quantity%>
+                    </td>
+                </tr>
+            <% end %>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    Subtotal: 
+                </td>
+                <td>
+                    <%=@subtotal%>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    Processing: 
+                </td>
+                <td>
+                    <%=@stripe_fees%>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    Total: 
+                </td>
+                <td>
+                    <%=@total%>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+  </body>
+</html>

@@ -28,8 +28,10 @@ class WebhookController < ApplicationController
             order.user.orders.create!(
                 status: 'New'
             )
+            OrderMailer.with(order: order).ordered.deliver_now
         when 'payment_intent.payment_failed'
             order.update(status: 'Payment Failed', details: intent['last_payment_error']['message'])
+            OrderMailer.with(order: order).failed.deliver_now
         when 'payment_intent.canceled'
             order.order_items.each do |item|
                 item.art.update(quantity: item.art.quantity - item.quantity)

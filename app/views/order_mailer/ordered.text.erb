@@ -1,0 +1,11 @@
+Hi, <%= @order.user.firstname %>
+
+Your order has been placed and is awaiting shipment
+
+<%@order.order_items.each do |item|%>
+    <%= "#{item.art.title} #{item.art.price} x#{item.quantity} #{item.art.price * item.quantity}"%>
+<% end %>
+
+Subtotal: <%= @subtotal%>
+Processing: <%= @stripe_fees%>
+Total: <%= @total%>
