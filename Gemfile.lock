@@ -206,6 +206,7 @@ DEPENDENCIES
   puma (~> 5.0)
   rack-cors
   rails (~> 6.1.4, >= 6.1.4.4)
+  ruby-vips
   stripe
   tzinfo-data
 

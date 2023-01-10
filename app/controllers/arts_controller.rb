@@ -1,11 +1,40 @@
 class ArtsController < ApplicationController
     before_action :authorize, except: [:index]
+
     def index
         render json: Art.order(:created_at).reverse_order
     end
 
     def create
-        @art = Art.new(art_params)
+        art_params.to_h => {title:, description:, price:, status:, quantity:, length:, height:, width:, weight:, photo:}
+
+        image = Vips::Image.new_from_file photo.to_path
+
+        watermark = Vips::Image.text "Shai Prince Art", width: 200, dpi: 200, font: "sans bold"
+        watermark = watermark.rotate(-45)
+        watermark = (watermark * 0.3).cast(:uchar)
+        watermark = watermark.gravity :centre, 200, 200
+        watermark = watermark.replicate 1 + image.width / watermark.width, 1 + image.height / watermark.height
+        watermark = watermark.crop 0, 0, image.width, image.height
+
+        overlay = (watermark.new_from_image [255, 128, 128]).copy interpretation: :srgb
+        overlay = overlay.bandjoin watermark
+        image = image.composite overlay, :over
+
+        # art_params[:photo] = image
+
+        @art = Art.new({
+            title: title,
+            description: description,
+            price: price,
+            status: status,
+            quantity: quantity,
+            length: length,
+            height: height,
+            width: width,
+            weight: weight
+        })
+        @art.photo.attach(io: StringIO.new(image.write_to_buffer(".jpg")), filename: "test-#{ Time.current.to_i }.jpg", content_type: "image/jpg")
         if @art.save
             Stripe::Product.create({
                 default_price_data:{
@@ -92,6 +121,6 @@ class ArtsController < ApplicationController
     def authorize
         render json: {error: "you are not signed in"}, status: :forbidden if !cookies.signed[:user_id]
         @user = User.find(cookies.signed[:user_id])
-        render json: {error: "you are not authorized"}, status: :unauthorized if !user.admin
+        render json: {error: "you are not authorized"}, status: :unauthorized if !@user.admin
     end
 end

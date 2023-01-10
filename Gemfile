@@ -47,4 +47,6 @@ gem 'stripe'
 gem  'ed25519', '~> 1.2'
 gem 'bcrypt_pbkdf', '~> 1.0'
 
+#gems for watermarks
 gem "image_processing", "~> 1.0"
+gem "ruby-vips"
