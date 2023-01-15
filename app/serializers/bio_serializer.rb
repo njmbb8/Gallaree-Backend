@@ -3,6 +3,6 @@ class BioSerializer < ActiveModel::Serializer
   attributes :biography, :artist_statement, :photo
 
   def photo
-    rails_blob_path(object.photo, only_path: true)
+    url_for(object.photo)
   end
 end

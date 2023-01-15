@@ -117,4 +117,8 @@ Rails.application.configure do
 
   #URL for frontend
   config.front_end = "https://shaiprinceart.com/"
+
+  #set host for activestorage
+  Rails.application.routes.default_url_options[:host] = 'api.shaiprinceart.com'
+  Rails.application.routes.default_url_options[:protocol] = 'https'
 end

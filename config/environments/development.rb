@@ -82,4 +82,7 @@ Rails.application.configure do
 
   #URL for frontend
   config.front_end = "http://localhost:3000/"
+
+  #set host for activestorage
+  Rails.application.routes.default_url_options[:host] = 'localhost:4000'
 end
