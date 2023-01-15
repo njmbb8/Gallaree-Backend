@@ -63,7 +63,7 @@ Rails.application.configure do
 
   # outgoing mail configuration
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = { :host => 'shainaprinceart.com' }
+  config.action_mailer.default_url_options = { :host => 'shaiprinceart.com' }
   config.action_mailer.raise_delivery_errors = true
   # Send email in development mode?
   config.action_mailer.perform_deliveries = true
