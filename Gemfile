@@ -50,3 +50,6 @@ gem 'bcrypt_pbkdf', '~> 1.0'
 #gems for watermarks
 gem "image_processing", "~> 1.0"
 gem "ruby-vips"
+
+#gem for multitenancy
+gem 'activerecord-multi-tenant'
