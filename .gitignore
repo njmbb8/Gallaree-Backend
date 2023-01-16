@@ -34,4 +34,4 @@
 /storage/*
 /config/secrets.yml
 
-/.tomo/*
+/.tomo
