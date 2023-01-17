@@ -1,6 +1,6 @@
 class UnsubscribeController < ApplicationController
     def update
-        @user = User.find_signed(params[:token], purpose: 'account_confirmation')
+        @user = User.find_signed(params[:id], purpose: 'unsubscribe')
         if @user.update(unsubscribe: DateTime.current)
             head :ok
         else

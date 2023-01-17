@@ -9,6 +9,8 @@
         <%=@art.description.truncate(50)%>
 
         
-        <a href=<%="#{Rails.application.config.front_end}/art/#{@art.id}"%>>Check it Out Here</a>
+        <a href=<%="#{Rails.application.config.front_end}art/#{@art.id}"%>>Check it Out Here</a>
+
+        <a href=<%="#{Rails.application.config.front_end}unsubscribe/#{@unsubscribe}"%>>Unsubscribe</a>
     </body>
 </html>

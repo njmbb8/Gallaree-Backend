@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :blogs, only: [:index, :show, :create, :update, :destroy]
   resources :comments, only: [:index, :show, :create, :update, :destroy]
   resources :conversations, only: [:index, :show, :create, :update]
+  resources :unsubscribe, only: [:update]
   post '/register', to: 'users#create'
   post '/login', to: 'sessions#create'
   get '/me', to: 'users#show'
