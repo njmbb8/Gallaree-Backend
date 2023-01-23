@@ -19,8 +19,8 @@ There are many technologies used which can be found in the gem file; the heavy l
 - Storage of data needed for an about page
 - A blog  with a photo per post and comments
 - Cart and checkout are processed on the back end using Stripe
-
-## To Do
 - Messaging
 - Automate email notifications for receipts, new messages, etc. 
+
+## To Do
 - Multitenancy to turn this into a Saas sidehustle
