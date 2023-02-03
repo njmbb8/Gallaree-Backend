@@ -1,0 +1,11 @@
+pngout: false
+advpng: false
+jhead: false
+jpegtran: false
+jpegrecompress: false
+svgo: false
+optipng: false
+pngquant: false
+jpegoptim:
+  allow_lossy: true
+  max_quality: 85

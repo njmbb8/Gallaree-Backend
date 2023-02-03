@@ -47,9 +47,10 @@ gem 'stripe'
 gem  'ed25519', '~> 1.2'
 gem 'bcrypt_pbkdf', '~> 1.0'
 
-#gems for watermarks
+#gems for watermarks and other image processing
 gem "image_processing", "~> 1.0"
 gem "ruby-vips"
+gem "image_optim"
 
 #gem for multitenancy
 gem 'activerecord-multi-tenant'
