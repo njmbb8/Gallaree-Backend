@@ -85,4 +85,7 @@ Rails.application.configure do
 
   #set host for activestorage
   Rails.application.routes.default_url_options[:host] = 'localhost:4000'
+
+  #Processor for image variants
+  Rails.application.config.active_storage.variant_processor = :vips
 end

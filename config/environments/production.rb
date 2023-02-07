@@ -121,4 +121,7 @@ Rails.application.configure do
   #set host for activestorage
   Rails.application.routes.default_url_options[:host] = 'api.shaiprinceart.com'
   Rails.application.routes.default_url_options[:protocol] = 'https'
+
+  #Processor for image variants
+  Rails.application.config.active_storage.variant_processor = :vips
 end
