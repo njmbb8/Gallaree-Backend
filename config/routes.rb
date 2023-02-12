@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :comments, only: [:index, :show, :create, :update, :destroy]
   resources :conversations, only: [:index, :show, :create, :update]
   resources :unsubscribe, only: [:update]
+  resources :ship_rates, only: [:show]
   post '/register', to: 'users#create'
   post '/login', to: 'sessions#create'
   get '/me', to: 'users#show'
